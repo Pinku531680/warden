@@ -1,4 +1,5 @@
-![In Progress](https://shields.io)
+> [!IMPORTANT]
+> **Project Status:** This project is currently a Work in Progress.
 
 # Warden: Distributed Real-Time Fraud Detection System
 
