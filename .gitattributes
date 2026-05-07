@@ -3,8 +3,8 @@ warden-ui/public/** linguist-vendored
 
 # 2. Ignore specific large JS files in 'src'
 # Replace 'LargeFileName.js' with your actual file name
-warden-ui/src/users/UserDataGeneration.js linguist-vendored
-warden-ui/src/transactions/TransactionDataGeneration.js linguist-vendored
+warden-ui/src/users/UsersDataGeneration.js linguist-vendored
+warden-ui/src/transactions/TransactionsDataGeneration.js linguist-vendored
 warden-ui/src/utilities.js linguist-vendored
 
 # 3. Ignore boilerplate React files that aren't 'your' code
