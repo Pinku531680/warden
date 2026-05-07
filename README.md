@@ -21,7 +21,7 @@ The system is decoupled into three specialized services to ensure scalability an
 
 **1. Data Generation & Pipelines**
    
-**Adversarial Simulation**: Custom pipelines to generate realistic "Attack" scenarios, including **Impossible Travel (high-speed GPS shifts)**, **Behavioral Anomalies**, **Temporal Deviations (odd-hour transactions mapped to local timezones)**, and **Statistical Surges (ATV Delta spikes)**.
+**Adversarial Simulation**: Custom pipelines to generate realistic "Attack" scenarios, including **Impossible Travel (high-speed GPS shifts)**, **Behavioral Anomalies**, **Temporal Deviations (odd-hour transactions mapped to local timezones)**, and **Statistical Surges**.
 
 **Feature Analytics**: Integrated pre-simulation tools to analyze feature distributions before they hit the inference engine.
 
