@@ -1,20 +1,21 @@
-# 1. Mark the entire UI folder as documentation
-# This keeps the files visible but removes them from the stats bar
-warden-ui/** linguist-documentation
-
-# 2. Alternatively, if you want SOME JS to show, only detect the main App logic
-# This tells Git: "Ignore everything in UI, EXCEPT these specific files"
-warden-ui/** linguist-detectable=false
-warden-ui/src/App.js linguist-detectable=true
-warden-ui/src/users/** linguist-detectable=true
-warden-ui/src/users/UsersDataGeneration.js linguist-detectable=false
-warden-ui/src/transactions/** linguist-detectable=true
-warden-ui/src/transactions/TransactionsUserData.js linguist-detectable=false
-warden-ui.src/*.css linguist-detectable=true
-
-# 3. Keep your ML and Backend as the primary focus
-warden-ml/** linguist-detectable=true
-warden-backend/** linguist-detectable=true
-
-# 4. If you have any large CSS files that are skewing stats
+# 1. Neutralize the heavy assets and boilerplate
+warden-ui/public/** linguist-vendored
+warden-ui/src/reportWebVitals.js linguist-vendored
+warden-ui/src/setupTests.js linguist-vendored
 warden-ui/src/*.css linguist-vendored
+
+# 2. Specifically target the "Data Generation" bloat
+# We mark these as 'generated' so they are hidden from stats but still searchable
+warden-ui/src/users/UsersDataGeneration.js linguist-generated
+warden-ui/src/transactions/TransactionsDataGeneration.js linguist-generated
+warden-ui/src/utilities.js linguist-generated
+
+# 3. Kill the XML noise
+# This prevents pom.xml or IDE files from stealing the spotlight
+*.xml linguist-vendored
+.idea/** linguist-vendored
+
+# 4. Ensure your "Logic" JS is still counted
+warden-ui/src/users/** linguist-detectable=true
+warden-ui/src/transactions/** linguist-detectable=true
+warden-ui/src/*.css linguist-detectable=true
