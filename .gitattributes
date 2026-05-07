@@ -1,0 +1,15 @@
+# 1. Ignore the 'public' folder (Icons, SVGs, and JSONs add a lot of byte-weight)
+warden-ui/public/** linguist-vendored
+
+# 2. Ignore specific large JS files in 'src'
+# Replace 'LargeFileName.js' with your actual file name
+warden-ui/src/users/UserDataGeneration.js linguist-vendored
+warden-ui/src/transactions/TransactionDataGeneration.js linguist-vendored
+warden-ui/src/utilities.js linguist-vendored
+
+# 3. Ignore boilerplate React files that aren't 'your' code
+warden-ui/src/reportWebVitals.js linguist-vendored
+warden-ui/src/setupTests.js linguist-vendored
+
+# 4. If you have any large CSS files that are skewing stats
+warden-ui/src/*.css linguist-vendored
