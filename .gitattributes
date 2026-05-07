@@ -1,6 +1,8 @@
 # 1. Surgical Strike: Hide only the Data Generation files
 warden-ui/src/users/UsersDataGeneration.js linguist-vendored
 warden-ui/src/transactions/TransactionsDataGeneration.js linguist-vendored
+warden-ui/src/utilities.js linguist-vendored
+warden-ui/src/measurePerformance.js linguist-vendored
 
 # 2. Kill the XML Noise
 # This hides pom.xml and IDE files so Java/Python can dominate
@@ -23,4 +25,4 @@ warden-ui/src/transactions/** linguist-detectable=true
 # 5. Hide React boilerplate that bloats the JS percentage
 warden-ui/src/reportWebVitals.js linguist-vendored
 warden-ui/src/setupTests.js linguist-vendored
-warden-ui/public/** linguist-vendored
+# warden-ui/public/** linguist-vendored
