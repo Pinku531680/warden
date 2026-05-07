@@ -7,6 +7,7 @@ warden-ui/src/measurePerformance.js linguist-vendored
 # 2. Kill the XML Noise
 # This hides pom.xml and IDE files so Java/Python can dominate
 *.xml linguist-vendored
+*.json linguist-vendored
 .idea/** linguist-vendored
 target/** linguist-vendored
 
@@ -25,5 +26,5 @@ warden-ui/src/transactions/** linguist-detectable=true
 # 5. Hide React boilerplate that bloats the JS percentage
 warden-ui/src/reportWebVitals.js linguist-vendored
 warden-ui/src/setupTests.js linguist-vendored
-warden-ui/package-lock.json linguist-vendored
+# warden-ui/package-lock.json linguist-vendored
 # warden-ui/public/** linguist-vendored
