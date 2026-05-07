@@ -5,7 +5,8 @@
 
 #### Warden is a high-performance fraud detection ecosystem designed to identify anomalous transaction patterns through distributed orchestration and machine learning. It covers the full lifecycle from synthetic data generation to explainable ML-driven inference.
 
-**Architecture Overview**
+# **Architecture Overview**
+
 The system is decoupled into three specialized services to ensure scalability and fault tolerance:
 
 Warden UI (React): Real-time monitoring dashboard featuring synthetic data generation pipelines, pre-simulation feature analytics, and live model insight logs.
