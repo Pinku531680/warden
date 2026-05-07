@@ -25,4 +25,5 @@ warden-ui/src/transactions/** linguist-detectable=true
 # 5. Hide React boilerplate that bloats the JS percentage
 warden-ui/src/reportWebVitals.js linguist-vendored
 warden-ui/src/setupTests.js linguist-vendored
+warden-ui/package-lock.json linguist-vendored
 # warden-ui/public/** linguist-vendored
