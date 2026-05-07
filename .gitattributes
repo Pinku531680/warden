@@ -7,6 +7,10 @@ warden-ui/** linguist-documentation
 warden-ui/** linguist-detectable=false
 warden-ui/src/App.js linguist-detectable=true
 warden-ui/src/users/** linguist-detectable=true
+warden-ui/src/users/UsersDataGeneration.js linguist-detectable=false
+warden-ui/src/transactions/** linguist-detectable=true
+warden-ui/src/transactions/TransactionsUserData.js linguist-detectable=false
+warden-ui.src/*.css linguist-detectable=true
 
 # 3. Keep your ML and Backend as the primary focus
 warden-ml/** linguist-detectable=true
