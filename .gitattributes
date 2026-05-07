@@ -16,6 +16,6 @@ warden-ui/src/utilities.js linguist-generated
 .idea/** linguist-vendored
 
 # 4. Ensure your "Logic" JS is still counted
-warden-ui/src/users/** linguist-detectable=true
+warden-ui/src/users/UsersFeatureAnalytics.js linguist-detectable=true
 warden-ui/src/transactions/** linguist-detectable=true
 warden-ui/src/*.css linguist-detectable=true
