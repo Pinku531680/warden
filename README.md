@@ -10,7 +10,7 @@
 
 The system is decoupled into three specialized services to ensure scalability and fault tolerance:
 
-**Warden UI (React)**: Real-time monitoring dashboard featuring synthetic data generation pipelines, pre-simulation feature analytics, and live model insight logs.
+**Warden UI (React)**: Real-time monitoring dashboard featuring synthetic data generation pipelines, pre-simulation feature analytics, and live model insight logs (with post-simulation analytics).
 
 **Warden Backend (Spring Boot)**: The central orchestration layer. Manages PostgreSQL/Redis state, executes complex feature engineering, ensures transaction idempotency, and maintains MQ reliability.
 
