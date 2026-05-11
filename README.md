@@ -46,7 +46,7 @@ The system is decoupled into three specialized services to ensure scalability an
 
 **Machine Learning**: Python (FastAPI), Scikit-Learn / XGBoost
 
-**Message Queue**: RabbitMQ
+**Message Broker**: RabbitMQ
 
-**Frontend**: React.js
+**Frontend**: React.js, Recharts, and Nivo (for visualization of feature analytics)
 
