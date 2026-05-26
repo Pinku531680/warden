@@ -110,3 +110,18 @@ export const buildDistanceMatrix = (cityCoords) => {
     return distanceMatrix;
 }
 
+export const getCorrelation = (x, y) => {
+
+  const n = x.length;
+  const muX = x.reduce((a, b) => a + b, 0) / n;
+  const muY = y.reduce((a, b) => a + b, 0) / n;
+
+  const num = x.reduce((acc, val, i) => acc + (val - muX) * (y[i] - muY), 0);
+  const den = Math.sqrt(
+    x.reduce((acc, val) => acc + Math.pow(val - muX, 2), 0) *
+    y.reduce((acc, val) => acc + Math.pow(val - muY, 2), 0)
+  );
+
+  return den === 0 ? 0 : num / den; 
+}
+

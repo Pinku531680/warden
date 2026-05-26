@@ -5,44 +5,128 @@ import {
   ComposedChart, Area 
 } from 'recharts';
 import { ResponsiveHeatMap } from '@nivo/heatmap';
+import {getCorrelation, round} from "../utilities"
 
+// THEME FOR THE HEAT MAP
+const theme = {
+  // Sets font for everything: axis, tooltips, legends
+  fontFamily: 'Poppins, sans-serif', 
+  fontSize: 12,
+  axis: {
+    ticks: {
+      text: {
+        fontFamily: 'Poppins, sans-serif',
+        fill: 'rgb(59, 60, 59)', // A nice slate gray
+        fontSize: 11,     // Size of the feature names (meanTxn30d, etc.)
+        fontWeight: 400,
+      }
+    }
+  },
+  tooltip: {
+    container: {
+      background: '#ffffff',
+      color: '#333333',
+      fontSize: 12,
+      borderRadius: '8px',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+    },
+  },
+  legends: {
+    text: {
+      fontSize: 12,
+      fontWeight: 400,
+      fill: '#4b5563', // Soft gray
+    },
+    title: {
+      text: {
+        fontFamily: 'Poppins, sans-serif',
+        fontSize: 12,
+        fontWeight: 400,
+        fill: '#29292a', // Darker gray for the title
+      }
+    }
+  },
+};
+
+const getAllValues = (attribute) => {
+  // this function is not really called ever
+  return [];
+}
+
+// takes an attribute, then gets all values of that attribute from all objects
+// using the getAllValues() function, and then does the work
+const generateBins = (attribute, N, useAttribute = true, attributeValues = []) => {
+
+  // we can also, provide useAttribute as FALSE and just pass the arr of attr values
+  // to be used
+  const values = useAttribute ? getAllValues(attribute) : attributeValues;
+  //const N = 12;  
+  // // N bins are to be generated, taken input, default = 12
+  let bins = [];  // has objects with props - rangeStart, rangeEnd, count, density
+  // density is bin count / (totalCount * binWidth)
+  const valuesMin = Math.min(...values);
+  const valuesMax = Math.max(...values);
+  // const N = N ? N : values.length;
+
+  const diff = Math.ceil((valuesMax - valuesMin) / N) || 1;  // this diff is "binWidth"
+
+  let info = {
+    "attribute": attribute,
+    "diff": diff,
+    "valuesMin": valuesMin,
+    "valuesMax": valuesMax
+  }
+
+  if(attribute === "accAge" || attribute === "monthlyAvgTxn") {
+    console.table(info);
+  }
+  // ranges will start from here, in every iteration, we keep on increaseing this
+  // by "diff"
+  // let rangeStart = valuesMin;
+  let L = values.length;
+
+  let binCounts = new Array(N).fill(0);
+
+  values.forEach((val) => {
+    // find in which bin the "val" should lie
+    let index = Math.floor((val - valuesMin) / diff);
+
+    if(index === N) {
+      // for max values, the index becomes exactly N, so we reduce it to fit in thelast bin
+      index = N - 1;
+    }
+
+    if(index >= 0 && index < N) {
+      binCounts[index]++;
+    }
+  })
+
+  bins = binCounts.map((count, index) => {
+    const rangeStart = valuesMin + (index * diff);
+    const rangeEnd = rangeStart + diff;
+
+    let rangeStartStr = rangeStart >= 1000 ? `${round(rangeStart/1000, 1)}k` : `${rangeStart}`;
+    let rangeEndStr = rangeEnd >= 1000 ? `${round(rangeEnd/1000, 1)}k` : `${rangeEnd}`;
+    const rangeStr = rangeStartStr + "-" + rangeEndStr;          
+
+    return {
+      range: rangeStr,
+      rangeStart,
+      rangeEnd,
+      count: count,
+      density: count / (L * diff)
+    }
+  })
+
+  // console.log(bins);
+
+  return bins;
+}
 
 function UsersFeatureAnalytics({usersData}) {
 
-  const round = (num, decimalPlaces) => {
-    // takes no. of decimal places to round to  
-    // supports for +Ve and -ve numebrs
-    const factor = Math.pow(10, decimalPlaces);
+  const ACCOUNT_TYPES = ["STUDENT", "STANDARD", "PREMIUM", "BUSINESS"];
 
-    return Math.trunc(num * factor) / factor;
-  }
-
-  const getCorrelation = (x, y) => {
-
-    const n = x.length;
-    const muX = x.reduce((a, b) => a + b, 0) / n;
-    const muY = y.reduce((a, b) => a + b, 0) / n;
-
-    const num = x.reduce((acc, val, i) => acc + (val - muX) * (y[i] - muY), 0);
-    const den = Math.sqrt(
-      x.reduce((acc, val) => acc + Math.pow(val - muX, 2), 0) *
-      y.reduce((acc, val) => acc + Math.pow(val - muY, 2), 0)
-    );
-
-    return den === 0 ? 0 : num / den; 
-  }
-
-  const getAllValues = (attribute) => {
-    // taking attribute, we get all values of all users from usersData object
-    // for that particular attribute
-    let values = [];
-
-    for(const [ID, value] of Object.entries(usersData)) {
-      values.push(value[attribute]);
-    }
-
-    return values;
-  }
 
   const getAllAccTypes = () => {
 
@@ -126,266 +210,84 @@ function UsersFeatureAnalytics({usersData}) {
     return rowCount;
   }
 
-  // takes an attribute, then gets all values of that attribute from all objects
-  // using the getAllValues() function, and then does the work
-  const generateBins = (attribute, N, useAttribute = true, attributeValues = []) => {
 
-    // we can also, provide useAttribute as FALSE and just pass the arr of attr values
-    // to be used
-    const values = useAttribute ? getAllValues(attribute) : attributeValues;
-    //const N = 12;  
-    // // N bins are to be generated, taken input, default = 12
-    let bins = [];  // has objects with props - rangeStart, rangeEnd, count, density
-    // density is bin count / (totalCount * binWidth)
-    const valuesMin = Math.min(...values);
-    const valuesMax = Math.max(...values);
+  // we put the entire grouping, creating bins, and related below code inside useMemo
+  const analytics = useMemo(() => {
 
-    const diff = Math.ceil((valuesMax - valuesMin) / N) || 1;  // this diff is "binWidth"
+    // generating abd groupings bins in this section
+    const userEntries = Object.values(usersData || {});
 
-    let info = {
-      "attribute": attribute,
-      "diff": diff,
-      "valuesMin": valuesMin,
-      "valuesMax": valuesMax
+    const allMeanTxn30d = [];
+    const allAccAge = [];
+    const allStdDevTxn = [];
+    const allFlaggedTxns = [];
+    const allAccTypes = [];
+
+    // initialize grouped tier maps
+    const ageGroupsByType = { STUDENT: [], STANDARD: [], PREMIUM: [], BUSINESS: [] };
+    const meanTxnGroupsByType = { STUDENT: [], STANDARD: [], PREMIUM: [], BUSINESS: [] };
+    const stdDevTxnGroupsByType = { STUDENT: [], STANDARD: [], PREMIUM: [], BUSINESS: [] };
+    const flaggedTxnsGroupsByType = { STUDENT: [], STANDARD: [], PREMIUM: [], BUSINESS: [] };
+
+    for(let k = 0; k < userEntries.length; k++) {
+      
+      const {accType, accAge, meanTxn30d, stdDevTxn, flaggedTxns} = userEntries[k];
+
+      // forming arr of values for all features
+      allMeanTxn30d.push(meanTxn30d);
+      allAccAge.push(accAge);
+      allStdDevTxn.push(stdDevTxn);
+      allFlaggedTxns.push(flaggedTxns);
+      allAccTypes.push(accType);
+
+      // forming grouping for all necessary features based on accType
+      ageGroupsByType[accType].push(accAge);
+      meanTxnGroupsByType[accType].push(meanTxn30d);
+      stdDevTxnGroupsByType[accType].push(stdDevTxn);
+      flaggedTxnsGroupsByType[accType].push(flaggedTxns);
     }
 
-    if(attribute === "accAge" || attribute === "monthlyAvgTxn") {
-      console.table(info);
+    // map to be used in place ofthe function getValues(attr)
+    const getValuesByAttribute = {
+      "meanTxn30d": allMeanTxn30d,
+      "accAge": allAccAge,
+      "stdDevTxn": allStdDevTxn,
+      "flaggedTxns": allFlaggedTxns,
+      "accTypes": allAccTypes
     }
-    // ranges will start from here, in every iteration, we keep on increaseing this
-    // by "diff"
-    // let rangeStart = valuesMin;
-    let L = values.length;
 
-    let binCounts = new Array(N).fill(0);
+    // generating bins for meanTxn30d, accAge, stdDevTxn, flaggedTxns
+    const meanTxnAmtDistData = generateBins(null, 18, false, allMeanTxn30d);
+    const accAgeDistData = generateBins(null, 20, false, allAccAge);
+    const stdDevTxnDistData = generateBins(null, 18, false, allStdDevTxn);
+    const flaggedTxnsDistData = generateBins(null, 18, false, allFlaggedTxns);
 
-    values.forEach((val) => {
-      // find in which bin the "val" should lie
-      let index = Math.floor((val - valuesMin) / diff);
 
-      if(index === N) {
-        // for max values, the index becomes exactly N, so we reduce it to fit in thelast bin
-        index = N - 1;
-      }
+    // creating bins objects for all required attributes
+    const binnedAgeGroupsDataByType = {};
+    const binnedTxnGroupsDataByType = {};
+    const binnedStdDevGroupsDataByType = {};
+    const binnedFlaggedTxnsGroupsByType = {};
 
-      if(index >= 0 && index < N) {
-        binCounts[index]++;
-      }
+
+    // generating specific distributions for each feature based on accType
+    ACCOUNT_TYPES.forEach((type) => {
+      binnedAgeGroupsDataByType[type] = generateBins(null, 18, false, ageGroupsByType[type]);
+      binnedTxnGroupsDataByType[type] = generateBins(null, 18, false, meanTxnGroupsByType[type]);
+      binnedStdDevGroupsDataByType[type] = generateBins(null, 18, false, stdDevTxnGroupsByType[type]);
+      binnedFlaggedTxnsGroupsByType[type] = generateBins(null, 18, false, flaggedTxnsGroupsByType[type]);
     })
 
-    bins = binCounts.map((count, index) => {
-      const rangeStart = valuesMin + (index * diff);
-      const rangeEnd = rangeStart + diff;
+    // generating matrix for heatmaps
+    const matrixFeatures = ["accAge", "meanTxn30d", "accType", "flaggedTxns", "stdDevTxn"];
 
-      let rangeStartStr = rangeStart >= 1000 ? `${round(rangeStart/1000, 1)}` : `${rangeStart}`;
-      let rangeEndStr = rangeEnd >= 1000 ? `${round(rangeEnd/1000, 1)}` : `${rangeEnd}`;
-      const rangeStr = rangeStartStr + "-" + rangeEndStr;          
-  
-      return {
-        range: rangeStr,
-        rangeStart,
-        rangeEnd,
-        count: count,
-        density: count / (L * diff)
-      }
-    })
-
-    // console.log(bins);
-
-    // for every bin, we traverse all the values and get the count
-    // this approach is  O(L . N), where N can be 10-20, and L is the values length in thousands
-    // this is not the best at scale
-    // for(let k = 0; k < N; k++) {
-
-    //   // computing end of this range
-    //   let rangeEnd = rangeStart + diff;
-    //   let count = 0;
-    //   // having rangeStart and rangeEnd, we compute the "count" of occurences
-    //   // in rangeStart and rangeEnd -> [rangeStart, rangeEnd)
-    //   // we don't rangeStart is inclusive but not rangeEnd
-    //   for(let i = 0; i < L; i++) {
-
-    //     if(values[i] < rangeEnd && values[i] >= rangeStart) {
-    //       count++;
-    //     }
-    //   }
-
-    //   let density = count / (L * diff)   // density = bin count / (totalCount * binWidth)
-    //   const rangeStr = `${rangeStart >= 1000 ? `${round(rangeStart/1000, 1)}k` : rangeStart} - 
-    //                     ${rangeEnd >= 1000 ? `${round(rangeEnd/1000, 1)}k` : rangeEnd}`
-
-    //   bins.push({
-    //     range: rangeStr,
-    //     rangeStart,
-    //     rangeEnd,
-    //     count,
-    //     density
-    //   })
-
-    //   // update rangeStart, the rangeStart of next iteration becomes rangeEnd of this one
-    //   rangeStart = rangeEnd;
-    // }
-
-    // computeing he totalArea to verify if its almsot 1
-    // let totalArea = 0;
-
-    // for(let bin of bins) {
-    //   totalArea += bin.density * diff;
-    // }
-
-    // console.log("Total Area: ", totalArea);
-
-    return bins;
-  }
-
-  // function takes a categoryKey, like accType whcih has some distinct values
-  // and then valueKey like accAge, monthlyAvgTxn, etc
-  // and returns object with key as various "categoryKey" values
-  // and value as arr of values of "valueKey" for respective "categoryKey" 
-  const groupAttributeByCategory = (categoryKey, valueKey) => {
-
-    // this might take accType, accAge and return an object like
-    // {STUDENT: [24, 11, 19, ....], STANDARD: [55, 82, 31, ...], ...};
-    // then this type of object can be used to visualize distributions
-    // based on particular category
-    let outputMap = {};
-
-    for(const [ID, value] of Object.entries(usersData)) {
-
-      const key = value[categoryKey];
-      const val = value[valueKey];
-      // we make sure key is present in outputMap before adding val
-      // if not, put empty arr first
-      if(!outputMap[key]) {
-        outputMap[key] = [];
-      }
-
-      outputMap[key].push(val);
-    }
-
-    return outputMap;
-  }
-
-  const generateMockBins = () => {
-    const bins = [];
-    for (let i = 1; i <= 15; i++) {
-      const amountRange = `${(i - 1) * 50}-${i * 50}`;
-      // Simulating a log-normal count: lots of small txns, very few large ones
-      const count = Math.floor(1000 / (i * 0.5)); 
-      bins.push({
-        range: amountRange,
-        count: count,
-        // In a real app, calculate this: count / (total * binWidth)
-        density: count / 5000 
-      });
-    }
-    return bins;
-  };
-
-  // generating bins for "meanTxn30d", which should look like Log-normal distribution
-  const amountDistData = generateBins("meanTxn30d", 18);
-
-  // bins for "accAge" attribute, which should look like Normal distribution
-  const accAgeDistData = generateBins("accAge", 20);
-
-  // bins for "stdDevTxn", these vary based on accType
-  const stdDevTxnDistData = generateBins("stdDevTxn", 18);
-
-  // bins for "flaggedTxns"
-  const flaggedTxnsDistData = generateBins("flaggedTxns", 10);
-
-  // getting map of accAges categorised by account type
-  // also getting map of meanTxn30d by account type
-  // getting map of stdDevTxn by accountType
-  const ageGroupsByType = groupAttributeByCategory("accType", "accAge");
-  const avgTxnGroupsByType = groupAttributeByCategory("accType", "meanTxn30d");
-  const stdDevTxnGroupsByType = groupAttributeByCategory("accType", "stdDevTxn");
-  const flaggedTxnsGroupsByType = groupAttributeByCategory("accType", "flaggedTxns");
-
-  // getting arrs for all 4 accountt types
-  const studentAgeData = ageGroupsByType["STUDENT"];
-  const standardAgeData = ageGroupsByType["STANDARD"];
-  const premiumAgeData = ageGroupsByType["PREMIUM"];
-  const businessAgeData = ageGroupsByType["BUSINESS"];
-
-  const studentTxnData = avgTxnGroupsByType["STUDENT"];
-  const standardTxnData = avgTxnGroupsByType["STANDARD"];
-  const premiumTxnData = avgTxnGroupsByType["PREMIUM"];
-  const businessTxnData = avgTxnGroupsByType["BUSINESS"];
-
-  const studentStdDevData = stdDevTxnGroupsByType["STUDENT"];
-  const standardStdDevData = stdDevTxnGroupsByType["STANDARD"];
-  const premiumStdDevData = stdDevTxnGroupsByType["PREMIUM"];
-  const businessStdDevData = stdDevTxnGroupsByType["BUSINESS"];
-
-  const studentFlaggedTxnsData = flaggedTxnsGroupsByType["STUDENT"];
-  const standardFlaggedTxnsData = flaggedTxnsGroupsByType["STANDARD"];
-  const premiumFlaggedTxnsData = flaggedTxnsGroupsByType["PREMIUM"];
-  const businessFlaggedTxnsData = flaggedTxnsGroupsByType["BUSINESS"];
-
-  // console.log(studentAgeData);
-
-  // creating bins on these for display
-  const studentAgeDistData = generateBins(null, 18, false, studentAgeData);
-  const standardAgeDistData = generateBins(null, 18, false, standardAgeData);
-  const premiumAgeDistData = generateBins(null, 18, false, premiumAgeData);
-  const businessAgeDistData = generateBins(null, 18, false, businessAgeData);
-
-  const studentTxnDistData = generateBins(null, 18, false, studentTxnData);
-  const standardTxnDistData = generateBins(null, 18, false, standardTxnData);
-  const premiumTxnDistData = generateBins(null, 18, false, premiumTxnData);
-  const businessTxnDistData = generateBins(null, 18, false, businessTxnData);
-
-  const studentStdDevDistData = generateBins(null, 18, false, studentStdDevData);
-  const standardStdDevDistData = generateBins(null, 18, false, standardStdDevData);
-  const premiumStdDevDistData = generateBins(null, 18, false, premiumStdDevData);
-  const businessStdDevDistData = generateBins(null, 18, false, businessStdDevData);
-
-  const studentFlaggedTxnsDistData = generateBins(null, 10, false, studentFlaggedTxnsData);
-  const standardFlaggedTxnsDistData = generateBins(null, 10, false, standardFlaggedTxnsData);
-  const premiumFlaggedTxnsDistData = generateBins(null, 10, false, premiumFlaggedTxnsData);
-  const businessFlaggedTxnsDistData = generateBins(null, 10, false, businessFlaggedTxnsData);
-
-  // creating a single object to hold all those binned arrays
-  const binnedAgeGroupsDataByType = {
-    "STUDENT": studentAgeDistData,
-    "STANDARD": standardAgeDistData,
-    "PREMIUM": premiumAgeDistData,
-    "BUSINESS": businessAgeDistData
-  };
-
-  const binnedTxnGroupsDataByType = {
-    "STUDENT": studentTxnDistData,
-    "STANDARD": standardTxnDistData,
-    "PREMIUM": premiumTxnDistData,
-    "BUSINESS": businessTxnDistData
-  }
-
-  const binnedStdDevGroupsDataByType = {
-    "STUDENT": studentStdDevDistData,
-    "STANDARD": standardStdDevDistData,
-    "PREMIUM": premiumStdDevDistData,
-    "BUSINESS": businessStdDevDistData
-  };
-
-  const binnedFlaggedTxnsGroupsByType = {
-    "STUDENT": studentFlaggedTxnsDistData,
-    "STANDARD": standardFlaggedTxnsDistData,
-    "PREMIUM": premiumFlaggedTxnsDistData,
-    "BUSINESS": businessFlaggedTxnsDistData
-  }
-
-  // generating matrix for heatmaps
-  const matrixFeatures = ["accAge", "meanTxn30d", "accType", "flaggedTxns", "stdDevTxn"];
-
-  // the matrix is generated such that, we compute correlation coeffiecients for each feature A
-  // against each feature B of the "matrxiFeatures" arr
-  const matrixData = useMemo(() => {
-    return matrixFeatures.map((featureA) => ({
+    // the matrix is generated such that, we compute correlation coeffiecients for each feature A
+    // against each feature B of the "matrxiFeatures" arr
+    const matrixData = matrixFeatures.map((featureA) => ({
       id: featureA,
       data: matrixFeatures.map((featureB) => {
-        const arrA = featureA === "accType" ? getAllAccTypes() : getAllValues(featureA);
-        const arrB = featureB === "accType" ? getAllAccTypes() : getAllValues(featureB);
+        const arrA = featureA === "accType" ? getAllAccTypes() : getValuesByAttribute[featureA];
+        const arrB = featureB === "accType" ? getAllAccTypes() : getValuesByAttribute[featureB];
 
         return {
           x: featureB,
@@ -393,11 +295,36 @@ function UsersFeatureAnalytics({usersData}) {
         }
       })
     }))
-  }, [getAllAccTypes, getAllValues, matrixFeatures])
 
-  console.log("MATRIX DATA");
-  console.log(matrixData);
+    // console.log("MATRIX DATA");
+    // console.log(matrixData);
 
+    return {
+      meanTxnAmtDistData,
+      accAgeDistData,
+      stdDevTxnDistData,
+      flaggedTxnsDistData,
+      binnedAgeGroupsDataByType,
+      binnedTxnGroupsDataByType,
+      binnedStdDevGroupsDataByType,
+      binnedFlaggedTxnsGroupsByType,
+      matrixData
+    };
+
+  }, [usersData])
+
+  // using all the content returned from analytics useMemo after computation
+  const {
+    meanTxnAmtDistData,
+    accAgeDistData,
+    stdDevTxnDistData,
+    flaggedTxnsDistData,
+    binnedAgeGroupsDataByType,
+    binnedTxnGroupsDataByType,
+    binnedStdDevGroupsDataByType,
+    binnedFlaggedTxnsGroupsByType,
+    matrixData
+  } = analytics;
 
   // this value decides which accType's accAge distribution will be displayed
   const [selectedAccType, setSelectedAccType] = useState("STUDENT");
@@ -427,51 +354,10 @@ function UsersFeatureAnalytics({usersData}) {
 
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 100);
 
     return () => clearTimeout(timer);
   }, [])
-
-  // THEME FOR THE HEAT MAP
-  const theme = {
-    // Sets font for everything: axis, tooltips, legends
-    fontFamily: 'Poppins, sans-serif', 
-    fontSize: 12,
-    axis: {
-      ticks: {
-        text: {
-          fontFamily: 'Poppins, sans-serif',
-          fill: 'rgb(59, 60, 59)', // A nice slate gray
-          fontSize: 11,     // Size of the feature names (meanTxn30d, etc.)
-          fontWeight: 400,
-        }
-      }
-    },
-    tooltip: {
-      container: {
-        background: '#ffffff',
-        color: '#333333',
-        fontSize: 12,
-        borderRadius: '8px',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-      },
-    },
-    legends: {
-      text: {
-        fontSize: 12,
-        fontWeight: 400,
-        fill: '#4b5563', // Soft gray
-      },
-      title: {
-        text: {
-          fontFamily: 'Poppins, sans-serif',
-          fontSize: 12,
-          fontWeight: 400,
-          fill: '#29292a', // Darker gray for the title
-        }
-      }
-    },
-  };
 
 
   if(loading) {
@@ -494,11 +380,11 @@ function UsersFeatureAnalytics({usersData}) {
 
       <div className="analytics-section">
 
-        {/* 1. AMOUNT DISTRIBUTION (Log-Normal Check) */}
+        {/* 1. meanTxn30d distribution and density */}
         <div className="analytics-plot">
           <p>meanTxn30d Distribution & Density</p>
           <ResponsiveContainer width="100%" height="80%">
-            <ComposedChart data={amountDistData}>
+            <ComposedChart data={meanTxnAmtDistData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis 
                 dataKey="range" 

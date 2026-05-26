@@ -8,12 +8,13 @@ import { cityCoords, cityToCountry, deviceIds, firstNames, generateAccAge, gener
 import { buildDistanceMatrix, random, refinedNormalRandom, round } from "./utilities";
 import TransactionsDataTable from "./transactions/TransactionsDataTable";
 import TransactionsFeatureAnalytics from "./transactions/TransactionsFeatureAnalytics";
+import { generateTxnAmt, generateTxnTime } from "./transactions/TransactionsDataGeneration";
 
 
 function App() {
 
   const [selectedTab, setSelectedTab] = useState("Feature Analytics");  // Data Table, Feature Analytics or Model Insights
-  const [mode, setMode] = useState("users")  // users or transactions
+  const [mode, setMode] = useState("transactions")  // users or transactions
 
   const changeTab = (newTab) => {
 
@@ -27,8 +28,8 @@ function App() {
   const [usersData, setUsersData] = useState({});
 
   // this the the array of objects of transactions data generated from here
-  const [transactionsData, setTransactionsData] = useState([
-    {
+  const [transactionsData, setTransactionsData] = useState({
+    "U001": {
       userId: "U001",
       txnAmt: 220,
       txnCountry: "UK",
@@ -36,9 +37,10 @@ function App() {
       txnLat: cityCoords["Glasgow"][0],
       txnLon: cityCoords["Glasgow"][1],
       copyPastedCardNo: false,
-      merchantType: "LUXURY"
+      merchantType: "LUXURY",
+      deviceId: deviceIds[Math.floor(Math.random() * deviceIds.length)]
     },
-    {
+    "U009": {
       userId: "U009",
       txnAmt: 95,
       txnCountry: "US",
@@ -46,9 +48,10 @@ function App() {
       txnLat: cityCoords["Bellevue"][0],
       txnLon: cityCoords["Bellevue"][1],
       copyPastedCardNo: false,
-      merchantType: "GROCERY"
+      merchantType: "GROCERY",
+      deviceId: deviceIds[Math.floor(Math.random() * deviceIds.length)]
     },
-    {
+    "U076": {
       userId: "U076",
       txnAmt: 435,
       txnCountry: "UAE",
@@ -56,9 +59,10 @@ function App() {
       txnLat: cityCoords["Dubai"][0],
       txnLon: cityCoords["Dubai"][1],
       copyPastedCardNo: false,
-      merchantType: "TRAVEL"
+      merchantType: "TRAVEL",
+      deviceId: deviceIds[Math.floor(Math.random() * deviceIds.length)]
     },
-    {
+    "U056": {
       userId: "U056",
       txnAmt: 143,
       txnCountry: "India",
@@ -66,9 +70,10 @@ function App() {
       txnLat: cityCoords["Bangalore"][0],
       txnLon: cityCoords["Bangalore"][1],
       copyPastedCardNo: false,
-      merchantType: "LUXURY"
+      merchantType: "LUXURY",
+      deviceId: deviceIds[Math.floor(Math.random() * deviceIds.length)]
     },
-    {
+    "U245": {
       userId: "U245",
       txnAmt: 760,
       txnCountry: "Brazil",
@@ -76,9 +81,10 @@ function App() {
       txnLat: cityCoords["São Paulo"][0],
       txnLon: cityCoords["São Paulo"][1],
       copyPastedCardNo: true,
-      merchantType: "CRYPTO"
+      merchantType: "CRYPTO",
+      deviceId: deviceIds[Math.floor(Math.random() * deviceIds.length)]
     },
-    {
+    "U196": {
       userId: "U196",
       txnAmt: 23,
       txnCountry: "Canada",
@@ -86,17 +92,104 @@ function App() {
       txnLat: cityCoords["Montreal"][0],
       txnLon: cityCoords["Montreal"][1],
       copyPastedCardNo: false,
-      merchantType: "DIGITAL"
+      merchantType: "DIGITAL",
+      deviceId: deviceIds[Math.floor(Math.random() * deviceIds.length)]
     },
-  ])
+    "U155": {
+      userId: "U155",
+      txnAmt: 150,
+      txnCountry: "India",
+      txnTime: Date.now(),
+      txnLat: cityCoords["Kanpur"][0],
+      txnLon: cityCoords["Kanpur"][1],
+      copyPastedCardNo: false,
+      merchantType: "CRYPTO",
+      deviceId: deviceIds[Math.floor(Math.random() * deviceIds.length)]
+    },
+    "U566": {
+      userId: "U566",
+      txnAmt: 78,
+      txnCountry: "Brazil",
+      txnTime: Date.now(),
+      txnLat: cityCoords["Salvador"][0],
+      txnLon: cityCoords["Salvador"][1],
+      copyPastedCardNo: false,
+      merchantType: "GROCERY",
+      deviceId: deviceIds[Math.floor(Math.random() * deviceIds.length)]
+    }
+  })
 
+  // these are fullnames generated in generateUsersData function
   let fullNames = [];
 
+  // here will be the used Ids of users whose transaction data has been generated
+  // the obj has this form - "userId" : count, where count can be at max 2
+  // stating that, for a particular user, we might have 2 transactions in the same simululation
+  // the txns might depict high velocity, duplicate transcations, kind of patterns
+  let usedUserIds = {};
+
+  // function that utilizes all others in TransactionsDataGenertaion.js 
+  // and generates transactions data
+  const generateTransactionsData = () => {
+
+    // this fucntion runs after generateUsersData has finished, so useres data is there
+    // user names  are there, and we can traverse on that
+
+    // "U566": {
+    //   userId: "U566",
+    //   txnAmt: 78,
+    //   txnCountry: "Brazil",
+    //   txnTime: Date.now(),
+    //   txnLat: cityCoords["Salvador"][0],
+    //   txnLon: cityCoords["Salvador"][1],
+    //   copyPastedCardNo: false,
+    //   merchantType: "GROCERY",
+    //   deviceId: deviceIds[Math.floor(Math.random() * deviceIds.length)]
+    // }
+
+    const MERCHANT_TYPES = ["GROCERY", "DIGITAL", "TRAVEL", "LUXURY", "CRYPTO"];
+
+    const N = 250;
+    // this local obj is updated with transactions genertead, at the end, transactionsData state
+    // is updated
+    let transactions = {};
+
+    // getting all userIds from usersData obj
+    let userIds = Object.keys(usersData);
+
+    for(let k = 0; k < N; k++) {
+
+      const selectedUserId = userIds[k];
+      let userObj = usersData[selectedUserId];
+
+      const generatedTxnAmt = generateTxnAmt(userObj.meanTxn30d, userObj.stdDevTxn, userObj.accType, userObj.accAge);
+      const generatedTxnTimeObj = generateTxnTime(userObj.lastTxnCity);
+
+      let transactionObj = {
+        txnAmt: generatedTxnAmt,
+        txnTime: generatedTxnTimeObj.localTime24hStr,
+        txnTimeObj: generatedTxnTimeObj,
+        txnCountry: cityToCountry[userObj.lastTxnCity],
+        txnLat: cityCoords[userObj.lastTxnCity][0],
+        txnLon: cityCoords[userObj.lastTxnCity][1],
+        copyPastedCardNo: false,
+        merchantType: MERCHANT_TYPES[Math.floor(Math.random() * MERCHANT_TYPES.length)],
+        deviceId: deviceIds[Math.floor(Math.random() * deviceIds.length)]
+      }
+
+      transactions[selectedUserId] = transactionObj;
+    }
+    
+    setTransactionsData(transactions);
+
+    console.log("Transactions data generated");
+  }
 
   // generating the user data here that will be in the DB
+  // this function utilizes all the functions in UsersDataGeneration.js
   const generateUsersData = () => {
 
-    const N = 1000;
+    const N = 2_000;
 
     // generate full names first
     fullNames = generateUniqueFullNames(N);
@@ -177,8 +270,10 @@ function App() {
   useEffect(() => {
 
     if(!dataGenerated) {
+
       generateUsersData();
-      
+      generateTransactionsData();
+
       dataGenerated = true;
     }
 
@@ -232,7 +327,7 @@ function App() {
       }
       {
         (selectedTab === "Feature Analytics" && mode === "transactions") &&
-        <TransactionsFeatureAnalytics transactionsData={transactionsData} />
+        <TransactionsFeatureAnalytics transactionsData={transactionsData} usersData={usersData} />
       }
       {
         selectedTab === "Model Insights" &&
