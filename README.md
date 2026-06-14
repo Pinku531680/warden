@@ -29,7 +29,7 @@ The system is decoupled into three specialized services to ensure scalability an
    
 **Feature Engineering**: Real-time calculation of ATV Delta, Geodesic Distance, and Temporal Velocity using Redis for low-latency state lookups.
 
-**Reliability & Idempotency**: Custom logic to prevent duplicate processing and a 30-second watchdog timer that re-queues lost transactions to ensure 100% processing uptime.
+**Reliability & Idempotency**: Custom logic to prevent duplicate processing and a 15-second watchdog timer that re-queues lost transactions to ensure guaranteed processing.
 
 **3. Explainable ML Inference**
    
@@ -37,14 +37,14 @@ The system is decoupled into three specialized services to ensure scalability an
 
 **Model Explainability**: Generates basic natural language reasons for every decision.
 
-**Real-time Loop**: Inferences are pushed back to the UI via the backend for immediate visualization, logging, and post-simulation analytics.
+**Real-time Loop**: Inferences are pushed back to the UI via the backend for logging and post-simulation analytics.
 
 
 ## **Tech Stack**
 
 **Backend**: Spring Boot, Java, PostgreSQL, Redis
 
-**Machine Learning**: Python (FastAPI), Scikit-Learn / XGBoost
+**Machine Learning**: Python (FastAPI), Scikit-Learn, LightGBM
 
 **Message Broker**: RabbitMQ
 
