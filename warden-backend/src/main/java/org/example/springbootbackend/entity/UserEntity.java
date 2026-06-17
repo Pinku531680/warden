@@ -9,32 +9,34 @@ import org.springframework.context.annotation.Primary;
 
 @Entity
 @Data
-@Table(name = "users")
+@Table(name = "users_data")
 public class UserEntity {
 
     @Id
-    @Column(name = "userId")
+    @Column(name = "user_id")
     int userId;
     @Column(name = "name")
     String name;
-    @Column(name = "accType")
+    @Column(name = "acc_type")
     String accType;   // STUDENT, STANDARD, PREMIUM, BUSINESS
-    @Column(name = "accAge")
+    @Column(name = "acc_age")
     int accAge;  // in months
-    @Column(name = "lastTxnLat")
+    @Column(name = "last_txn_lat")
     float lastTxnLat;
-    @Column(name = "lastTxnLon")
+    @Column(name = "last_txn_lon")
     float lastTxnLon;
-    @Column(name = "lastTxnCity")
+    @Column(name = "last_txn_city")
     String lastTxnCity;
-    @Column(name = "homeCountry")
+    @Column(name = "last_txn_time")
+    long lastTxnTime;
+    @Column(name = "home_country")
     String homeCountry;
-    @Column(name = "meanTxn30d")
+    @Column(name = "mean_txn_30d")
     int meanTxn30d;  // avg of the all the txn amounts across 30 days
-    @Column(name = "stdDevTxn")
+    @Column(name = "std_dev_txn")
     int stdDevTxn;
-    @Column(name = "primaryDeviceId")
+    @Column(name = "primary_device_id")
     String primaryDeviceId;
-    @Column(name = "flaggedTxns")
+    @Column(name = "flagged_txns")
     int flaggedTxns;  // no. of flagged transactions from this account
 }

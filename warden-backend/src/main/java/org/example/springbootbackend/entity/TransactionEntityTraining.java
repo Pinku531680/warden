@@ -14,60 +14,59 @@ import lombok.Setter;
 @Table(name = "transactions_training")
 @Getter
 @Setter
-public class TransactionEntity {
+public class TransactionEntityTraining {
 
     // this is what gets saved in the DB with status = "PENDING" while transaction is being processed
     // later status changes to "REJECTED" or "APPROVED"
-
     @Id
-    @Column(name = "txnId")
+    @Column(name = "txn_id")
     String txnId;
-    @Column(name = "txnAmt")
+    @Column(name = "txn_amt")
     int txnAmt;
-    @Column(name = "accType")
+    @Column(name = "acc_type")
     String accType;
-    @Column(name = "accAge")
+    @Column(name = "acc_age")
     int accAge;
-    @Column(name = "flaggedTxns")
+    @Column(name = "flagged_txns")
     int flaggedTxns;
-    @Column(name = "merchantType")
+    @Column(name = "merchant_type")
     String merchantType;
-    @Column(name = "txnLat")
+    @Column(name = "txn_lat")
     float txnLat;
-    @Column(name = "txnLon")
+    @Column(name = "txn_lon")
     float txnLon;
 
-    @Column(name = "txnTimeUTC")
+    @Column(name = "txn_time_utc")
     long txnTimeUTC;
-    @Column(name = "txnTimeLocalHour")
+    @Column(name = "txn_time_local_hour")
     int txnTimeLocalHour;
-    @Column(name = "txnCountry")
+    @Column(name = "txn_country")
     String txnCountry;
-    @Column(name = "deviceId")
+    @Column(name = "device_id")
     String deviceId;
 
 
 
-    @Column(name = "geoCountryMismatch")
+    @Column(name = "geo_country_mismatch")
     boolean geoCountryMismatch;
-    @Column(name = "locationHop")
+    @Column(name = "location_hop")
     String locationHop;
-    @Column(name = "geoDistanceKm")
+    @Column(name = "geo_distance_km")
     int geoDistanceKm;
-    @Column(name = "timeGapLastTxn")
+    @Column(name = "time_gap_last_txn")
     long timeGapLastTxn;
-    @Column(name = "isAbnormalTime")
+    @Column(name = "is_abnormal_time")
     boolean isAbnormalTime;
-    @Column(name = "highTxnVelocity")
+    @Column(name = "high_txn_velocity")
     boolean highTxnVelocity;
-    @Column(name = "userAtvDelta")
+    @Column(name = "user_atv_delta")
     float userAtvDelta;
-    @Column(name = "isNewDevice")
+    @Column(name = "is_new_device")
     boolean isNewDevice;
-    @Column(name = "speedKmh")
+    @Column(name = "speed_kmh")
     int speedKmh;
 
-    @Column(name = "fraudScore")
+    @Column(name = "fraud_score")
     float fraudScore;  // from the Python service after prediction, b/w 0 and 1
 
 }

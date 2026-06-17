@@ -17,6 +17,7 @@ public class User {
     float lastTxnLat;
     float lastTxnLon;
     String lastTxnCity;
+    long lastTxnTime;
     String homeCountry;
     int meanTxn30d;
     int stdDevTxn;
@@ -27,9 +28,11 @@ public class User {
         this.userId = userEntity.getUserId();
         this.name = userEntity.getName();
         this.accType = userEntity.getAccType();
+        this.accAge = userEntity.getAccAge();
         this.lastTxnLat = userEntity.getLastTxnLat();
         this.lastTxnLon = userEntity.getLastTxnLon();
         this.lastTxnCity = userEntity.getLastTxnCity();
+        this.lastTxnTime = userEntity.getLastTxnTime();
         this.homeCountry = userEntity.getHomeCountry();
         this.meanTxn30d = userEntity.getMeanTxn30d();
         this.stdDevTxn = userEntity.getStdDevTxn();
