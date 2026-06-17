@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package org.example.springbootbackend.model;
+
+option java_multiple_files = true;
+option java_package = "org.example.springbootbackend.model.proto";
+option java_outer_classname = "TransactionProto";
+
+message TransactionProtoMsg {
+    // Core Raw Features & Primary Keys
+    string txnId = 1;
+    string userId = 2;
+    string accType = 3;
+    int32 accAge = 4;
+    int32 flaggedTxns = 5;
+    int32 txnAmt = 6;
+    int32 txnTimeLocalHour = 7;
+    int64 txnTimeUTC = 8;
+    string txnCountry = 9;
+    float txnLat = 10;
+    float txnLon = 11;
+    string merchantType = 12;
+    string deviceId = 13;
+    bool copyPastedCardNo = 14;
+
+    // On-The-Fly Engineered Diagnostic Features (For Training)
+    int32 geoDistanceKm = 15;
+    int64 timeGapLastTxn = 16;
+    int32 speedKmh = 17;
+    bool highTxnVelocity = 18;
+    bool isAbnormalTime = 19;
+    float userAtvDelta = 20;
+    bool isNewDevice = 21;
+    bool geoCountryMismatch = 22;
+    string locationHop = 23;
+
+    // Target Ground-Truth Label
+    float fraudScore = 24;
+}
+
+message TransactionChunkEnvelopeProto {
+    int32 chunkSize = 1;
+    bool isLastChunk = 2;
+    repeated TransactionProtoMsg payload = 3;
+}

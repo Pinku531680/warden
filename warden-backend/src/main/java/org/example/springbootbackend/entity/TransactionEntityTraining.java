@@ -6,10 +6,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Data
-@Table(name = "transactions")
+@Table(name = "transactions_training")
+@Getter
+@Setter
 public class TransactionEntity {
 
     // this is what gets saved in the DB with status = "PENDING" while transaction is being processed
@@ -17,9 +21,7 @@ public class TransactionEntity {
 
     @Id
     @Column(name = "txnId")
-    long txnId;
-    @Column(name = "userId")
-    int userId;
+    String txnId;
     @Column(name = "txnAmt")
     int txnAmt;
     @Column(name = "accType")
@@ -30,16 +32,32 @@ public class TransactionEntity {
     int flaggedTxns;
     @Column(name = "merchantType")
     String merchantType;
-    @Column(name = "copyPastedCardNo")
-    boolean copyPastedCardNo;
+    @Column(name = "txnLat")
+    float txnLat;
+    @Column(name = "txnLon")
+    float txnLon;
+
+    @Column(name = "txnTimeUTC")
+    long txnTimeUTC;
+    @Column(name = "txnTimeLocalHour")
+    int txnTimeLocalHour;
+    @Column(name = "txnCountry")
+    String txnCountry;
+    @Column(name = "deviceId")
+    String deviceId;
+
+
+
     @Column(name = "geoCountryMismatch")
     boolean geoCountryMismatch;
+    @Column(name = "locationHop")
+    String locationHop;
     @Column(name = "geoDistanceKm")
     int geoDistanceKm;
     @Column(name = "timeGapLastTxn")
     long timeGapLastTxn;
     @Column(name = "isAbnormalTime")
-    boolean isAbrormalTime;
+    boolean isAbnormalTime;
     @Column(name = "highTxnVelocity")
     boolean highTxnVelocity;
     @Column(name = "userAtvDelta")
@@ -51,4 +69,5 @@ public class TransactionEntity {
 
     @Column(name = "fraudScore")
     float fraudScore;  // from the Python service after prediction, b/w 0 and 1
+
 }
