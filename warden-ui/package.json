@@ -9,6 +9,7 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^13.5.0",
+    "protobufjs": "^8.6.3",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-scripts": "5.0.1",
@@ -19,12 +20,17 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "proto:compile": "pbjs -t static-module -w es6 -o src/proto/compiled.js ../proto/transaction_envelope.proto && npx pbts -o src/proto/compiled.d.ts src/proto/compiled.js"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
+    ],
+    "ignorePatterns": [
+      "src/proto/compiled.js",
+      "src/proto/compiled.d.ts"
     ]
   },
   "browserslist": {
@@ -38,5 +44,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "protobufjs-cli": "^2.5.4"
   }
 }

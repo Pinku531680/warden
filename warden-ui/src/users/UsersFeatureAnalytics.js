@@ -222,6 +222,7 @@ function UsersFeatureAnalytics({usersData}) {
     const allStdDevTxn = [];
     const allFlaggedTxns = [];
     const allAccTypes = [];
+    const allLocalHour = [];
 
     // initialize grouped tier maps
     const ageGroupsByType = { STUDENT: [], STANDARD: [], PREMIUM: [], BUSINESS: [] };
@@ -231,7 +232,7 @@ function UsersFeatureAnalytics({usersData}) {
 
     for(let k = 0; k < userEntries.length; k++) {
       
-      const {accType, accAge, meanTxn30d, stdDevTxn, flaggedTxns} = userEntries[k];
+      const {accType, accAge, meanTxn30d, stdDevTxn, flaggedTxns, lastTxnTimeLocalHour} = userEntries[k];
 
       // forming arr of values for all features
       allMeanTxn30d.push(meanTxn30d);
@@ -239,6 +240,7 @@ function UsersFeatureAnalytics({usersData}) {
       allStdDevTxn.push(stdDevTxn);
       allFlaggedTxns.push(flaggedTxns);
       allAccTypes.push(accType);
+      allLocalHour.push(lastTxnTimeLocalHour);
 
       // forming grouping for all necessary features based on accType
       ageGroupsByType[accType].push(accAge);
@@ -246,6 +248,7 @@ function UsersFeatureAnalytics({usersData}) {
       stdDevTxnGroupsByType[accType].push(stdDevTxn);
       flaggedTxnsGroupsByType[accType].push(flaggedTxns);
     }
+
 
     // map to be used in place ofthe function getValues(attr)
     const getValuesByAttribute = {
@@ -260,7 +263,8 @@ function UsersFeatureAnalytics({usersData}) {
     const meanTxnAmtDistData = generateBins(null, 18, false, allMeanTxn30d);
     const accAgeDistData = generateBins(null, 20, false, allAccAge);
     const stdDevTxnDistData = generateBins(null, 18, false, allStdDevTxn);
-    const flaggedTxnsDistData = generateBins(null, 18, false, allFlaggedTxns);
+    const flaggedTxnsDistData = generateBins(null, 10, false, allFlaggedTxns);
+    const lastTxnTimeLocalHourDistData = generateBins(null, 24, false, allLocalHour);
 
 
     // creating bins objects for all required attributes
@@ -275,7 +279,7 @@ function UsersFeatureAnalytics({usersData}) {
       binnedAgeGroupsDataByType[type] = generateBins(null, 18, false, ageGroupsByType[type]);
       binnedTxnGroupsDataByType[type] = generateBins(null, 18, false, meanTxnGroupsByType[type]);
       binnedStdDevGroupsDataByType[type] = generateBins(null, 18, false, stdDevTxnGroupsByType[type]);
-      binnedFlaggedTxnsGroupsByType[type] = generateBins(null, 18, false, flaggedTxnsGroupsByType[type]);
+      binnedFlaggedTxnsGroupsByType[type] = generateBins(null, 10, false, flaggedTxnsGroupsByType[type]);
     })
 
     // generating matrix for heatmaps
@@ -304,6 +308,7 @@ function UsersFeatureAnalytics({usersData}) {
       accAgeDistData,
       stdDevTxnDistData,
       flaggedTxnsDistData,
+      lastTxnTimeLocalHourDistData,
       binnedAgeGroupsDataByType,
       binnedTxnGroupsDataByType,
       binnedStdDevGroupsDataByType,
@@ -319,6 +324,7 @@ function UsersFeatureAnalytics({usersData}) {
     accAgeDistData,
     stdDevTxnDistData,
     flaggedTxnsDistData,
+    lastTxnTimeLocalHourDistData,
     binnedAgeGroupsDataByType,
     binnedTxnGroupsDataByType,
     binnedStdDevGroupsDataByType,
@@ -392,7 +398,7 @@ function UsersFeatureAnalytics({usersData}) {
                 tick={{fontSize: 12}}
                 angle={-45}
                 textAnchor="end"
-                height={70}
+                height={60}
               />
 
               {/* left Y-asix for histogram bars */}
@@ -463,7 +469,7 @@ function UsersFeatureAnalytics({usersData}) {
                 tick={{fontSize: 11}}
                 angle={-45}
                 textAnchor="end"
-                height={70}
+                height={60}
               />
 
               {/* left Y-asix for histogram bars */}
@@ -510,7 +516,7 @@ function UsersFeatureAnalytics({usersData}) {
                 tick={{fontSize: 11}}
                 angle={-45}
                 textAnchor="end"
-                height={70}
+                height={60}
               />
 
               {/* left Y-asix for histogram bars */}
@@ -580,7 +586,7 @@ function UsersFeatureAnalytics({usersData}) {
                 tick={{fontSize: 11}}
                 angle={-45}
                 textAnchor="end"
-                height={70}
+                height={60}
               />
 
               {/* left Y-asix for histogram bars */}
@@ -626,7 +632,7 @@ function UsersFeatureAnalytics({usersData}) {
                 tick={{fontSize: 12}}
                 angle={-45}
                 textAnchor="end"
-                height={70}
+                height={60}
               />
 
               {/* left Y-asix for histogram bars */}
@@ -699,7 +705,7 @@ function UsersFeatureAnalytics({usersData}) {
                 tick={{fontSize: 11}}
                 angle={-45}
                 textAnchor="end"
-                height={70}
+                height={60}
               />
 
               {/* left Y-asix for histogram bars */}
@@ -745,7 +751,7 @@ function UsersFeatureAnalytics({usersData}) {
                 tick={{fontSize: 12}}
                 angle={-45}
                 textAnchor="end"
-                height={70}
+                height={60}
               />
 
               {/* left Y-asix for histogram bars */}
@@ -773,7 +779,7 @@ function UsersFeatureAnalytics({usersData}) {
               dataKey="count" 
               fill="rgb(49, 213, 49)" 
               name="Txn Count"
-              barSize={20} 
+              barSize={25} 
               />
               <Area 
                 yAxisId="right"
@@ -818,16 +824,18 @@ function UsersFeatureAnalytics({usersData}) {
                 tick={{fontSize: 11}}
                 angle={-45}
                 textAnchor="end"
-                height={70}
+                height={60}
               />
 
               {/* left Y-asix for histogram bars */}
               <YAxis yAxisId="left" orientation="left" stroke="rgb(49, 213, 49)" 
               tick={{fontSize: 13}}
+              scale="sqrt" domain={[0, "auto"]}
               label={{value: 'Count', angle: -90, position: 'insideLeft', fontSize: 14}}/>
               {/* right Y-axis for density line (0 to 1) */}
               <YAxis yAxisId="right" orientation="right" stroke="rgb(126, 222, 96)" 
               tick={{fontSize: 13}}
+              scale="sqrt" domain={[0, "auto"]}
               label={{value: 'Density', angle: 90, position: 'insideRight', fontSize: 14}}/>
 
               <Tooltip />
@@ -838,7 +846,7 @@ function UsersFeatureAnalytics({usersData}) {
               dataKey="count" 
               fill="rgb(49, 213, 49)" 
               name="Count"
-              barSize={15}
+              barSize={25}
               />
               <Area 
                 yAxisId="right"
@@ -852,6 +860,59 @@ function UsersFeatureAnalytics({usersData}) {
           </ResponsiveContainer>
         </div>
 
+        {/* 4. lastTxnTimeLocalHour distribution */}
+        <div className="analytics-plot">
+          <p>lastTxnTime Local hour Distribution & Density</p>
+          <ResponsiveContainer width="100%" height="80%">
+            <ComposedChart data={lastTxnTimeLocalHourDistData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis 
+                dataKey="range" 
+                interval={0}
+                tick={{fontSize: 12}}
+                angle={-55}
+                textAnchor="end"
+                height={60}
+              />
+
+              {/* left Y-asix for histogram bars */}
+              <YAxis yAxisId="left"
+              // scale="sqrt" domain={[0, "auto"]}
+              allowDataOverflow={true}
+              tickFormatter={(val) => Math.round(val)}
+              orientation="left" stroke="rgb(49, 213, 49)" 
+              tick={{fontSize: 13}}
+              label={{value: 'Txn Count', angle: -90, position: 'insideLeft', fontSize: 14}}/>
+              {/* right Y-axis for density line (0 to 1) */}
+              <YAxis yAxisId="right" 
+              // scale="sqrt" domain={[0, "auto"]}
+              orientation="right" stroke="rgb(126, 222, 96)" 
+              tick={{fontSize: 11}}
+              label={{value: 'Density', angle: 90, position: 'insideRight', fontSize: 14}}/>
+
+              <Tooltip />
+              <Legend labelStyle={{fontSize: 14, fontFamily: "Poppins, sans-serif"}}/>
+              <Bar 
+              radius={[3, 3, 0, 0]}
+              opacity={1}
+              yAxisId="left"
+              dataKey="count" 
+              fill="rgb(49, 213, 49)" 
+              name="Txn Count"
+              barSize={13} 
+              />
+              <Area 
+                yAxisId="right"
+                type="monotone" 
+                dataKey="density" 
+                scale="sqrt"
+                stroke="rgb(126, 222, 96)" 
+                fillOpacity={0.3} 
+                fill="rgb(126, 222, 96)" 
+                name="KDE (Density)" />
+            </ComposedChart>
+          </ResponsiveContainer>
+        </div>
 
         {/* 9 ACCTYPE vs MERCHANT (Stacked Comparison) */}
         <div className="analytics-plot">

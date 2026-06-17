@@ -370,10 +370,10 @@ export const generateMeanTxn30d = (accType, accAge) => {
 export const VOLATILITY_PROFILES = {
 
     // CV range -> [min, max]
-    // 0.1 -> 10% of mean, 0.9 -> 90% of mean
-    STUDENT: [0.1, 0.35],
-    STANDARD: [0.2, 0.55],
-    PREMIUM: [0.3, 0.75],
+    // 0.2 -> 20% of mean, 0.9 -> 90% of mean
+    STUDENT: [0.2, 0.6],
+    STANDARD: [0.2, 0.7],
+    PREMIUM: [0.25, 0.8],
     BUSINESS: [0.25, 0.9]
 };
 
@@ -438,3 +438,144 @@ export const generateFlaggedTxns = (accType, accAge) => {
     return count;
 }
 
+
+// Localized UTC offsets copy to maintain high-performance stateless lookups inside the User layer
+const BASELINE_CITY_OFFSETS = {
+  "Irvine": -480, "Los Angeles": -480, "Seattle": -480, "Bellevue": -480, "Redmond": -480,
+  "Houston": -360, "Arlington": -360, "Plano": -360, "Toronto": -300, "Montreal": -300, 
+  "Waterloo": -300, "London": 0, "Birmingham": 0, "Manchester": 0, "Liverpool": 0, 
+  "Glasgow": 0, "Edinburgh": 0, "Berlin": 60, "Hamburg": 60, "Bremen": 60, 
+  "Cologne": 60, "Munich": 60, "Frankfurt": 60, "Stuttgart": 60, "Zurich": 60, 
+  "Geneva": 60, "Basel": 60, "Bern": 60, "Lausanne": 60, "Lucerne": 60, 
+  "Dubai": 240, "Sharjah": 240, "Ankara": 180, "Bursa": 180, "Istanbul": 180, 
+  "Kanpur": 330, "Lucknow": 330, "Chennai": 330, "Bangalore": 330, "Vellore": 330, 
+  "Hyderabad": 330, "Warangal": 330, "Pune": 330, "Mumbai": 330, "Thane": 330, 
+  "São Paulo": -180, "Salvador": -180, "Rio de Janeiro": -180
+};
+
+// generating lastTxnTime, taking some randomCity
+// whcih will mostly be the city inside "homeCountry"
+export const generateLastTxnTime = (city, accType) => {
+
+  // odd lastTxnTime probabilities based on accType
+  const ODD_TIME_CHANCES = {
+    "STUDENT": 0.05,
+    "STANDARD": 0.10,
+    "PREMIUM": 0.18,
+    "BUSINESS": 0.25
+  };
+
+  const oddTimeChance = ODD_TIME_CHANCES[accType];
+
+  // Inline Box-Muller transform to generate standard normal Gaussian noise (Z ~ N(0, 1))
+  const gaussianRandom = () => {
+    const u1 = Math.random();
+    const u2 = Math.random();
+    return Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+  };
+
+  const roll = Math.random();
+  let localHour = 12; // default.
+  let sampledHour = 12;  // default
+
+  // HOUR GENERATION LOOP
+  if (roll < oddTimeChance) {
+    // SCENARIO A: ODD / HIGH-RISK NIGHT WAVE (Smooth late-night curve)
+    // Centered at 1 AM (Mean = 1.0) with a broad standard deviation around 3 hours
+    sampledHour = 1.0 + (gaussianRandom() * 4);
+  } 
+  else {
+    // SCENARIO B: STANDARD WINDOW -> 5 AM to 10 PM
+    const normalHours = [
+      5, 6, 7, 8, 9, 10,
+      11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+      21, 22
+    ];
+    
+    // For standard daylight transactions, heavily center purchases around peak retail retail hours
+    const peakRoll = Math.random();
+
+    // SCENARIO B: STANDARD DAYLIGHT COMMERCE (Overlapping wide hills)
+    const daylightRoll = Math.random();
+
+    if (daylightRoll < 0.7) {
+      // 1. The core retail plateau, where most transactions happen
+      // Centered at around 11 AM - 12 PM  with a wide standard deviation
+      // This forms a broad and lazy hill sloping down to evening
+      sampledHour = 13 + (gaussianRandom() * 3.5);
+    } 
+    else if (daylightRoll < 0.95) {
+      // 2. The Mid-Morning Business Surge
+      // Centered at around 9 AM, but with wide stdDev of 2.5
+      // This increases weights of times around 9AM upto evening times, creates a wide hill
+      sampledHour =  9 + (gaussianRandom() * 2.5);
+    } 
+    else {
+      // 3. Early morning commuters and spend
+      // Centered at 6 AM with a tight deviation of 1, is not much wide
+      sampledHour = 6 + (gaussianRandom() * 1);
+    }
+  }
+
+  // Cyclical timeline wrap-around normalization
+  localHour = Math.floor(sampledHour);
+  localHour = ((localHour % 24) + 24) % 24;
+
+  const localMinute = Math.floor(Math.random() * 60);
+  const localSecond = Math.floor(Math.random() * 60);
+
+  // TIME ACCURACY CONVERSION
+
+  // Establish an early historical anchor window: random day between Jan 1 and Jan 10, 2026
+  const baselineDate = new Date("2026-01-01T00:00:00Z");
+  const randomDayOffset = Math.floor(Math.random() * 10);
+  baselineDate.setDate(baselineDate.getDate() + randomDayOffset);
+
+  // Construct absolute UTC epoch using standard browser clock primitives
+  const utcEpochMillis = Date.UTC(
+    baselineDate.getUTCFullYear(),
+    baselineDate.getUTCMonth(),
+    baselineDate.getUTCDate(),
+    localHour,
+    localMinute,
+    localSecond
+  );
+
+  // De-shift the localized calculation back to accurate absolute UTC based on city offset
+  const offsetMinutes = BASELINE_CITY_OFFSETS[city] ?? 0;
+  const finalUtcTimestamp = utcEpochMillis - (offsetMinutes * 60 * 1000);
+
+  return {
+    utcTimestamp: finalUtcTimestamp,
+    localHour: localHour
+  };
+};
+
+
+const COUNTRIES = ["India", "US", "Canada", "Brazil", "UAE", "Turkey", "Germany", "Switzerland", "UK"];
+
+export const generateLastTxnCityAndHomeCountry = () => {
+  
+  // We pick random cities for "lastTxnCity", but for "homeCountry"
+  // we mostly pick the country where the "lastTxnCity" is in, but not always
+  // in around 5% of the cases, we pick some other abroad country
+  let cities = Object.keys(cityCoords);
+
+  let selectedCity = cities[Math.floor(cities.length * Math.random())];
+  let roll = Math.random();
+
+  if(roll < 0.95) {
+    // for 95% chances, we pick the smae country as selectedCity
+    return {
+      lastTxnCity: selectedCity,
+      homeCountry: cityToCountry[selectedCity]
+    };
+  }
+  else {
+    // for 5% chances, we pick a random country, not explicitly same as the selectedCity
+    return {
+      lastTxnCity: selectedCity,
+      homeCountry: COUNTRIES[Math.floor(COUNTRIES.length * Math.random())]
+    }
+  }
+}

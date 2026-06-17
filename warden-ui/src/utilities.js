@@ -125,3 +125,15 @@ export const getCorrelation = (x, y) => {
   return den === 0 ? 0 : num / den; 
 }
 
+
+export const isStrictInteger = (num) => {
+
+    let n = Number(num);
+
+    if (Number.isNaN(n)) {
+        return false;
+    }
+
+    return Number.isInteger(n);
+}
+
