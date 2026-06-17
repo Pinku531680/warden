@@ -18,7 +18,7 @@ warden-ui/src/**/*.html linguist-detectable=true
 warden-ui/src/*.css linguist-detectable=true
 warden-ui/src/*.html linguist-detectable=true
 warden-ui/src/App.js linguist-detectable=true
-warden-backend linguist-detectable=true
+warden-backend/** linguist-detectable=true
 
 # 4. Explicitly include your Analytics and Insights code
 # This ensures the rest of your 'users' and 'transactions' folders are counted
