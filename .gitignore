@@ -18,3 +18,41 @@ __pycache__/
 .idea/
 .vscode/
 *.swp
+
+# Secrets & Credentials Security
+.env
+*.properties
+instance/
+secrets/
+
+# Java / Spring Boot Build Artifacts
+warden-backend/target/
+warden-backend/.mvn/
+warden-backend/*.jar
+warden-backend/*.war
+
+# Python / Machine Learning Virtual Environments & Models
+warden-ml/venv/
+warden-ml/.venv/
+warden-ml/__pycache__/
+warden-ml/**/*.pyc
+warden-ml/data/*.csv
+warden-ml/data/*.parquet
+warden-ml/models/*.pkl
+warden-ml/models/*.json
+.pytest_cache/
+
+# Node / React Frontend Dependencies
+warden-ui/node_modules/
+warden-ui/build/
+warden-ui/.pnp/
+.eslintcache
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# System Files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
