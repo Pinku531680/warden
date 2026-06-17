@@ -1,6 +1,7 @@
 # 1. Surgical Strike: Hide only the Data Generation files
 warden-ui/src/users/UsersDataGeneration.js linguist-vendored
 warden-ui/src/transactions/TransactionsDataGeneration.js linguist-vendored
+warden-ui/src/services/simulationEngine.js linguist-vendored
 warden-ui/src/utilities.js linguist-vendored
 warden-ui/src/measurePerformance.js linguist-vendored
 
@@ -17,6 +18,7 @@ warden-ui/src/**/*.html linguist-detectable=true
 warden-ui/src/*.css linguist-detectable=true
 warden-ui/src/*.html linguist-detectable=true
 warden-ui/src/App.js linguist-detectable=true
+warden-backend linguist-detectable=true
 
 # 4. Explicitly include your Analytics and Insights code
 # This ensures the rest of your 'users' and 'transactions' folders are counted
