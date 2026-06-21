@@ -33,7 +33,13 @@ Built from scratch without heavy third-party UI frameworks, the frontend operate
    - **Reactive Backpressure Pacing**: Actively monitors downstream pipeline health. If unacknowledged transactions in flight cross our safe        threshold, the frontend automatically pauses its data emission loops to allow the backend pools to recover.
    - **Client-Side Retry Watchdog**: Tracks system delivery frames. Transactions are considered safely stored only when the backend issues a       TXN_ACK post-PostgreSQL write. If any transaction remains unacknowledged for more than 10 seconds, this client worker automatically re-        transmits it.
    - **Live System Telemetry**: Feeds incoming WebSocket frames into distinct memory state arrays. It features a standalone feature analytics       sandbox alongside a real-time observability log that computes live Transactions Per Second (TPS) capacity and moving round-trip latencies.
-    
+
+### 3. Decoupled Inference Worker (`warden-ml`)
+
+The machine learning pipeline is intentionally separated from the core data paths to ensure that training and evaluation never block live system ingestion.
+   - **Isolated Architecture**: Operates independently of the database and web servers, interacting solely with the message broker to ensure        absolute resource isolation.
+   - **High-Performance LightGBM Core**: Consumes transaction bytes directly from RabbitMQ and runs high-speed micro-batched evaluations using      a trained LightGBM classifier, combining the high accuracy of gradient boosting with sub-millisecond execution times.
+   - **Verdict Relinquishment**: Pushes completed fraud prediction records onto the dedicated RabbitMQ results queue, handing execution             control cleanly back to the Spring Boot response infrastructure.
     
 
 
