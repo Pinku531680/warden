@@ -15,7 +15,7 @@ Warden completely avoids traditional, open-loop synchronous HTTP request-respons
 </p>
 
 ## **Core Execution Planes**
-Warden’s architecture is split into three decoupled services, each optimizing for a specific operational bottleneck—ingestion throughput, data simulation, or low-latency prediction.
+Warden’s architecture is split into three decoupled services, each optimizing for a specific operational bottleneck — ingestion throughput, data simulation, or low-latency prediction.
 
 ### 1. High-Velocity Ingestion Gateway (`warden-backend`)
 
