@@ -17,7 +17,7 @@ Warden completely avoids traditional, open-loop synchronous HTTP request-respons
 ## **Core Execution Planes**
 Warden’s architecture is split into three decoupled services, each optimizing for a specific operational bottleneck—ingestion throughput, data simulation, or low-latency prediction.
 
-1. ### **High-Velocity Ingestion Gateway (`warden-backend`)**
+### 1. High-Velocity Ingestion Gateway (`warden-backend`)
 
    The backend serves as the durable system coordinator, handling high-frequency binary packet serialization and orchestration.
    - **Vectorized Data Handling**: Consumes Protocol Buffer chunks via stateful WebSockets, queries Redis in rapid batches to pull user             baselines, processes real-time feature engineering metrics, and executes high-speed batch saves to PostgreSQL.
@@ -26,7 +26,7 @@ Warden’s architecture is split into three decoupled services, each optimizing 
    - **Server-Side Watchdog (Reliability Guarantee)**: A background sweeper task polls PostgreSQL every 15 seconds. If it captures any              transaction that has been trapped in a PENDING state for more than 15 seconds due to broker or network dropouts, it automatically re-          queues it to guarantee reliable processing.
    - **Immediate Results Settlement**: The decoupled single-item response listener reads incoming model verdicts from the results queue,            instantly commits the final status to PostgreSQL/Redis, and flushes the data down the client WebSocket channel in real time.
      
-2. ### **Synthetic Data & Observability Control Center (`warden-ui`)**
+### 2. Synthetic Data & Observability Control Center (`warden-ui`)
 
    Built from scratch without heavy third-party UI frameworks, the frontend operates as both an advanced behavioral data generator and an         engine monitor.
    - **Probabilistic Data Simulator**: Dynamically generates realistic transaction streams by mapping statistical distributions. It injects         complex fraud patterns on the fly, including impossible travel anomalies, sudden velocity spikes, structural high-spending deviations,         and abnormal time profiles.
