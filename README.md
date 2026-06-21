@@ -11,7 +11,7 @@ https://github.com/user-attachments/assets/74a25cc8-4188-4cfa-94f5-fa6e25fd9138
 ## **System Architecture Blueprint**
 Warden completely avoids traditional, open-loop synchronous HTTP request-response patterns. Instead, it relies on a decoupled, event-driven data plane that ensures strong data persistence, high throughput, and network resilience.
 <p align="center">
-  <img src="https://github.com/Pinku531680/my-images/blob/main/HIGH-RES-PNG-Warden-Architecture-DiagraM.png" alt="Warden System Architecture Diagram" width="100%">
+  <img src="https://github.com/Pinku531680/my-images/blob/main/HIGH-RES-Warden-Architecture-DiagraM.png" alt="Warden System Architecture Diagram" width="100%">
 </p>
 
 ## **Architecture Overview**
