@@ -1,5 +1,6 @@
 package org.example.springbootbackend.config;
 
+import org.example.springbootbackend.controller.LiveSimulationWebSocketHandler;
 import org.example.springbootbackend.controller.TransactionWebSocketHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,15 +14,21 @@ import org.springframework.web.socket.server.standard.ServletServerContainerFact
 public class WebSocketConfig implements WebSocketConfigurer {
 
     private final TransactionWebSocketHandler transactionWebSocketHandler;
+    private final LiveSimulationWebSocketHandler liveSimulationWebSocketHandler;
 
-    public WebSocketConfig(TransactionWebSocketHandler transactionWebSocketHandler) {
+    public WebSocketConfig(TransactionWebSocketHandler transactionWebSocketHandler, LiveSimulationWebSocketHandler liveSimulationWebSocketHandler) {
         this.transactionWebSocketHandler = transactionWebSocketHandler;
+        this.liveSimulationWebSocketHandler = liveSimulationWebSocketHandler;
     }
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        // Exposes the binary-compliant Protocol Buffer pipeline endpoint to your UI dashboard
+        // Training Pipeline
         registry.addHandler(transactionWebSocketHandler, "/ws/transactions-binary-ingest")
+                .setAllowedOrigins("*");
+
+        // Live Simulation Engine Pipeline
+        registry.addHandler(liveSimulationWebSocketHandler, "/ws/live-simulation-ingest")
                 .setAllowedOrigins("*");
     }
 
