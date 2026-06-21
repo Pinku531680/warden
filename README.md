@@ -17,7 +17,7 @@ Warden completely avoids traditional, open-loop synchronous HTTP request-respons
 ## **Core Execution Planes**
 Warden’s architecture is split into three decoupled services, each optimizing for a specific operational bottleneck—ingestion throughput, data simulation, or low-latency prediction.
 
-###**1. High-Velocity Ingestion Gateway (`warden-backend`)**
+### **1. High-Velocity Ingestion Gateway (`warden-backend`)**
 
 The backend serves as the durable system coordinator, handling high-frequency binary packet serialization and orchestration.
    - **Vectorized Data Handling**: Consumes Protocol Buffer chunks via stateful WebSockets, queries Redis in rapid batches to pull user             baselines, processes real-time feature engineering metrics, and executes high-speed batch saves to PostgreSQL.
