@@ -7,6 +7,21 @@ import lightgbm as lgb
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score
 
+# CATEGORICAL CONTRACT
+ACC_TYPE_MAP = {
+    "STUDENT": 0,
+    "STANDARD": 1,
+    "PREMIUM": 2,
+    "BUSINESS": 3
+}
+
+MERCHANT_TYPE_MAP = {
+    "GROCERY": 0,
+    "DIGITAL": 1,
+    "TRAVEL": 2,
+    "LUXURY": 3,
+    "CRYPTO": 4
+}
 
 def execute_model_training_lifecycle(data_frame: pd.DataFrame):
     """
@@ -27,12 +42,20 @@ def execute_model_training_lifecycle(data_frame: pd.DataFrame):
     X = data_frame.drop(columns=['fraud_score', 'is_fraud'])
     y = data_frame['is_fraud']
 
-    # 2. CONVERT NOMINAL STRING ATTRIBUTES FOR NATIVE LIGHTGBM TRACKING
-    # Casting to category types tells LightGBM to use optimal partition algorithms instead of slow numerical conversions
-    categorical_features = ["acc_type", "merchant_type"]
-    for col in categorical_features:
-        if col in X.columns:
-            X[col] = X[col].astype('category')  # TODO
+    # 2. CONVERT NOMINAL STRING ATTRIBUTES
+    # # Casting to category types tells LightGBM to use optimal partition algorithms instead of slow numerical conversions
+    # categorical_features = ["acc_type", "merchant_type"]
+    # for col in categorical_features:
+    #     if col in X.columns:
+    #         X[col] = X[col].astype('category')  # TODO
+    print("[ML Pipeline] Transforming nominal properties to explicit integer contracts...")
+
+    if 'acc_type' in X.columns:
+        # Force uppercase, map strings to exact codes, fill gaps, cast to category dtype
+        X['acc_type'] = X['acc_type'].astype(str).str.upper().map(ACC_TYPE_MAP).fillna(1).astype('category')
+
+    if 'merchant_type' in X.columns:
+        X['merchant_type'] = X['merchant_type'].astype(str).str.upper().map(MERCHANT_TYPE_MAP).fillna(0).astype('category')
 
     # Ensure boolean attributes map to consistent model parameters
     boolean_features = ["geo_country_mismatch", "high_txn_velocity", "is_new_device", "is_abnormal_time"]

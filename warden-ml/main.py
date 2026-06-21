@@ -7,6 +7,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 import pandas as pd
 from fastapi.middleware.cors import CORSMiddleware
+
+from workers.inference_consumer import start_inference_worker, stop_inference_worker
 from workers.training_worker import start_training_worker, stop_training_worker
 from pipeline.training import execute_model_training_lifecycle
 
@@ -22,11 +24,15 @@ async def app_lifespan(app: FastAPI):
 
     # Fire the background consumer thread without blocking the FastAPI event loop
     start_training_worker()
+    start_inference_worker()  # Launches Micro-Batch Inference Listener Thread
 
     yield  # Application serves traffic here...
 
-    # APPLICATIONS LIFECYCLE: APP SHUTDOWN CLEANUP
+    print("\n[Warden ML Core] Commencing administrative socket teardown...")
+
     stop_training_worker()
+    stop_inference_worker()
+    print("[Warden ML Core] Microservice shutdown procedures completed.")
 
 
 # Initialize the application instance bound to the lifespan state machine
