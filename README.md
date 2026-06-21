@@ -6,7 +6,7 @@
 #### A high-throughput, microservices-driven event streaming pipeline engineered for real-time financial transaction fraud detection. Built with Spring Boot, FastAPI, and RabbitMQ, the system implements a closed-loop architecture featuring client-side reactive backpressure, low-latency micro-batched LightGBM inference, and server-side self-healing worker layers.
 
 ## **Live Demo & Observability Walkthrough**
-<video src="https://drive.google.com/file/d/167xF0HMN-_yCuXy2tLCkVeZcQX8R4nPX/view?usp=sharing" width="100%" controls></video>
+https://github.com/user-attachments/assets/74a25cc8-4188-4cfa-94f5-fa6e25fd9138
 
 ## **Architecture Overview**
 
