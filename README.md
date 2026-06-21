@@ -25,7 +25,15 @@ The backend serves as the durable system coordinator, handling high-frequency bi
    - **Outbound Streaming**: Pushes parsed transaction vectors onto the RabbitMQ inference queue using pinned, single-channel scopes to             eliminate context-switching overhead.
    - **Server-Side Watchdog (Reliability Guarantee)**: A background sweeper task polls PostgreSQL every 15 seconds. If it captures any              transaction that has been trapped in a PENDING state for more than 15 seconds due to broker or network dropouts, it automatically re-          queues it to guarantee reliable processing.
    - **Immediate Results Settlement**: The decoupled single-item response listener reads incoming model verdicts from the results queue,            instantly commits the final status to PostgreSQL/Redis, and flushes the data down the client WebSocket channel in real time.
-3. Synthetic Data & Observability Control Center (`warden-ui`)
+     
+2. ### **Synthetic Data & Observability Control Center (`warden-ui`)**
+Built from scratch without heavy third-party UI frameworks, the frontend operates as both an advanced behavioral data generator and an engine monitor.
+   - **Probabilistic Data Simulator**: Dynamically generates realistic transaction streams by mapping statistical distributions. It injects         complex fraud patterns on the fly, including impossible travel anomalies, sudden velocity spikes, structural high-spending deviations,         and abnormal time profiles.
+   - **Reactive Backpressure Pacing**: Actively monitors downstream pipeline health. If unacknowledged transactions in flight cross our safe        threshold, the frontend automatically pauses its data emission loops to allow the backend pools to recover.
+   - **Client-Side Retry Watchdog**: Tracks system delivery frames. Transactions are considered safely stored only when the backend issues a       TXN_ACK post-PostgreSQL write. If any transaction remains unacknowledged for more than 10 seconds, this client worker automatically re-        transmits it.
+   - **Live System Telemetry**: Feeds incoming WebSocket frames into distinct memory state arrays. It features a standalone feature analytics       sandbox alongside a real-time observability log that computes live Transactions Per Second (TPS) capacity and moving round-trip latencies.
+    
+    
 
 
 ## **Key Features**
