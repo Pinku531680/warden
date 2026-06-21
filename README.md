@@ -19,7 +19,7 @@ Warden’s architecture is split into three decoupled services, each optimizing 
 
 1. ### **High-Velocity Ingestion Gateway (`warden-backend`)**
 
-  The backend serves as the durable system coordinator, handling high-frequency binary packet serialization and orchestration.
+   The backend serves as the durable system coordinator, handling high-frequency binary packet serialization and orchestration.
    - **Vectorized Data Handling**: Consumes Protocol Buffer chunks via stateful WebSockets, queries Redis in rapid batches to pull user             baselines, processes real-time feature engineering metrics, and executes high-speed batch saves to PostgreSQL.
    - **Two-Tier Idempotency Engine**: Intercepts network duplication twice. It uses an initial fast Redis cache filter to reject duplicate          transaction IDs at the gateway, and a final database state validation in the response listener to prevent double processing.
    - **Outbound Streaming**: Pushes parsed transaction vectors onto the RabbitMQ inference queue using pinned, single-channel scopes to             eliminate context-switching overhead.
@@ -27,7 +27,8 @@ Warden’s architecture is split into three decoupled services, each optimizing 
    - **Immediate Results Settlement**: The decoupled single-item response listener reads incoming model verdicts from the results queue,            instantly commits the final status to PostgreSQL/Redis, and flushes the data down the client WebSocket channel in real time.
      
 2. ### **Synthetic Data & Observability Control Center (`warden-ui`)**
-  Built from scratch without heavy third-party UI frameworks, the frontend operates as both an advanced behavioral data generator and an         engine monitor.
+
+   Built from scratch without heavy third-party UI frameworks, the frontend operates as both an advanced behavioral data generator and an         engine monitor.
    - **Probabilistic Data Simulator**: Dynamically generates realistic transaction streams by mapping statistical distributions. It injects         complex fraud patterns on the fly, including impossible travel anomalies, sudden velocity spikes, structural high-spending deviations,         and abnormal time profiles.
    - **Reactive Backpressure Pacing**: Actively monitors downstream pipeline health. If unacknowledged transactions in flight cross our safe        threshold, the frontend automatically pauses its data emission loops to allow the backend pools to recover.
    - **Client-Side Retry Watchdog**: Tracks system delivery frames. Transactions are considered safely stored only when the backend issues a       TXN_ACK post-PostgreSQL write. If any transaction remains unacknowledged for more than 10 seconds, this client worker automatically re-        transmits it.
