@@ -1,5 +1,5 @@
 > [!IMPORTANT]
-> **Project Status:** This project is currently a Work in Progress.
+> **Readme Status:** Docs is currently in progress.
 
 # Warden: Distributed Real-Time Fraud Detection System
 
