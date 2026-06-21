@@ -13,6 +13,523 @@ export namespace org {
             /** Namespace model. */
             namespace model {
 
+                /** Namespace proto. */
+                namespace proto {
+
+                    /**
+                     * Properties of a LiveTransactionEventProto.
+                     * @deprecated Use org.example.springbootbackend.model.proto.LiveTransactionEventProto.$Properties instead.
+                     */
+                    interface ILiveTransactionEventProto extends org.example.springbootbackend.model.proto.LiveTransactionEventProto.$Properties {
+                    }
+
+                    /** Represents a LiveTransactionEventProto. */
+                    class LiveTransactionEventProto {
+
+                        /**
+                         * Constructs a new LiveTransactionEventProto.
+                         * @param [properties] Properties to set
+                         */
+                        constructor(properties?: org.example.springbootbackend.model.proto.LiveTransactionEventProto.$Properties);
+
+                        /** Unknown fields preserved while decoding when enabled */
+                        $unknowns?: Uint8Array[];
+
+                        /** LiveTransactionEventProto userId. */
+                        userId: number;
+
+                        /** LiveTransactionEventProto txnId. */
+                        txnId: string;
+
+                        /** LiveTransactionEventProto txnAmt. */
+                        txnAmt: number;
+
+                        /** LiveTransactionEventProto txnTimeUTC. */
+                        txnTimeUTC: (number|Long);
+
+                        /** LiveTransactionEventProto txnTimeLocalHour. */
+                        txnTimeLocalHour: number;
+
+                        /** LiveTransactionEventProto txnLat. */
+                        txnLat: number;
+
+                        /** LiveTransactionEventProto txnLon. */
+                        txnLon: number;
+
+                        /** LiveTransactionEventProto txnCountry. */
+                        txnCountry: string;
+
+                        /** LiveTransactionEventProto merchantType. */
+                        merchantType: string;
+
+                        /** LiveTransactionEventProto deviceId. */
+                        deviceId: string;
+
+                        /**
+                         * Creates a new LiveTransactionEventProto instance using the specified properties.
+                         * @param [properties] Properties to set
+                         * @returns LiveTransactionEventProto instance
+                         */
+                        static create(properties: org.example.springbootbackend.model.proto.LiveTransactionEventProto.$Shape): org.example.springbootbackend.model.proto.LiveTransactionEventProto & org.example.springbootbackend.model.proto.LiveTransactionEventProto.$Shape;
+                        static create(properties?: org.example.springbootbackend.model.proto.LiveTransactionEventProto.$Properties): org.example.springbootbackend.model.proto.LiveTransactionEventProto;
+
+                        /**
+                         * Encodes the specified LiveTransactionEventProto message. Does not implicitly {@link org.example.springbootbackend.model.proto.LiveTransactionEventProto.verify|verify} messages.
+                         * @param message LiveTransactionEventProto message or plain object to encode
+                         * @param [writer] Writer to encode to
+                         * @returns Writer
+                         */
+                        static encode(message: org.example.springbootbackend.model.proto.LiveTransactionEventProto.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                        /**
+                         * Encodes the specified LiveTransactionEventProto message, length delimited. Does not implicitly {@link org.example.springbootbackend.model.proto.LiveTransactionEventProto.verify|verify} messages.
+                         * @param message LiveTransactionEventProto message or plain object to encode
+                         * @param [writer] Writer to encode to
+                         * @returns Writer
+                         */
+                        static encodeDelimited(message: org.example.springbootbackend.model.proto.LiveTransactionEventProto.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                        /**
+                         * Decodes a LiveTransactionEventProto message from the specified reader or buffer.
+                         * @param reader Reader or buffer to decode from
+                         * @param [length] Message length if known beforehand
+                         * @returns {org.example.springbootbackend.model.proto.LiveTransactionEventProto & org.example.springbootbackend.model.proto.LiveTransactionEventProto.$Shape} LiveTransactionEventProto
+                         * @throws {Error} If the payload is not a reader or valid buffer
+                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                         */
+                        static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): org.example.springbootbackend.model.proto.LiveTransactionEventProto & org.example.springbootbackend.model.proto.LiveTransactionEventProto.$Shape;
+
+                        /**
+                         * Decodes a LiveTransactionEventProto message from the specified reader or buffer, length delimited.
+                         * @param reader Reader or buffer to decode from
+                         * @returns {org.example.springbootbackend.model.proto.LiveTransactionEventProto & org.example.springbootbackend.model.proto.LiveTransactionEventProto.$Shape} LiveTransactionEventProto
+                         * @throws {Error} If the payload is not a reader or valid buffer
+                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                         */
+                        static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): org.example.springbootbackend.model.proto.LiveTransactionEventProto & org.example.springbootbackend.model.proto.LiveTransactionEventProto.$Shape;
+
+                        /**
+                         * Verifies a LiveTransactionEventProto message.
+                         * @param message Plain object to verify
+                         * @returns `null` if valid, otherwise the reason why it is not
+                         */
+                        static verify(message: { [k: string]: any }): (string|null);
+
+                        /**
+                         * Creates a LiveTransactionEventProto message from a plain object. Also converts values to their respective internal types.
+                         * @param object Plain object
+                         * @returns LiveTransactionEventProto
+                         */
+                        static fromObject(object: { [k: string]: any }): org.example.springbootbackend.model.proto.LiveTransactionEventProto;
+
+                        /**
+                         * Creates a plain object from a LiveTransactionEventProto message. Also converts values to other types if specified.
+                         * @param message LiveTransactionEventProto
+                         * @param [options] Conversion options
+                         * @returns Plain object
+                         */
+                        static toObject(message: org.example.springbootbackend.model.proto.LiveTransactionEventProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                        /**
+                         * Converts this LiveTransactionEventProto to JSON.
+                         * @returns JSON object
+                         */
+                        toJSON(): { [k: string]: any };
+
+                        /**
+                         * Gets the type url for LiveTransactionEventProto
+                         * @param [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+                         * @returns The type url
+                         */
+                        static getTypeUrl(prefix?: string): string;
+                    }
+
+                    namespace LiveTransactionEventProto {
+
+                        /** Properties of a LiveTransactionEventProto. */
+                        interface $Properties {
+
+                            /** LiveTransactionEventProto userId */
+                            userId?: (number|null);
+
+                            /** LiveTransactionEventProto txnId */
+                            txnId?: (string|null);
+
+                            /** LiveTransactionEventProto txnAmt */
+                            txnAmt?: (number|null);
+
+                            /** LiveTransactionEventProto txnTimeUTC */
+                            txnTimeUTC?: (number|Long|null);
+
+                            /** LiveTransactionEventProto txnTimeLocalHour */
+                            txnTimeLocalHour?: (number|null);
+
+                            /** LiveTransactionEventProto txnLat */
+                            txnLat?: (number|null);
+
+                            /** LiveTransactionEventProto txnLon */
+                            txnLon?: (number|null);
+
+                            /** LiveTransactionEventProto txnCountry */
+                            txnCountry?: (string|null);
+
+                            /** LiveTransactionEventProto merchantType */
+                            merchantType?: (string|null);
+
+                            /** LiveTransactionEventProto deviceId */
+                            deviceId?: (string|null);
+
+                            /** Unknown fields preserved while decoding when enabled */
+                            $unknowns?: Uint8Array[];
+                        }
+
+                        /** Shape of a LiveTransactionEventProto. */
+                        type $Shape = org.example.springbootbackend.model.proto.LiveTransactionEventProto.$Properties;
+                    }
+
+                    /**
+                     * Properties of a LiveSimulationEnvelopeProto.
+                     * @deprecated Use org.example.springbootbackend.model.proto.LiveSimulationEnvelopeProto.$Properties instead.
+                     */
+                    interface ILiveSimulationEnvelopeProto extends org.example.springbootbackend.model.proto.LiveSimulationEnvelopeProto.$Properties {
+                    }
+
+                    /** Represents a LiveSimulationEnvelopeProto. */
+                    class LiveSimulationEnvelopeProto {
+
+                        /**
+                         * Constructs a new LiveSimulationEnvelopeProto.
+                         * @param [properties] Properties to set
+                         */
+                        constructor(properties?: org.example.springbootbackend.model.proto.LiveSimulationEnvelopeProto.$Properties);
+
+                        /** Unknown fields preserved while decoding when enabled */
+                        $unknowns?: Uint8Array[];
+
+                        /** LiveSimulationEnvelopeProto chunkSize. */
+                        chunkSize: number;
+
+                        /** LiveSimulationEnvelopeProto isLastChunk. */
+                        isLastChunk: boolean;
+
+                        /** LiveSimulationEnvelopeProto payload. */
+                        payload: org.example.springbootbackend.model.proto.LiveTransactionEventProto.$Properties[];
+
+                        /**
+                         * Creates a new LiveSimulationEnvelopeProto instance using the specified properties.
+                         * @param [properties] Properties to set
+                         * @returns LiveSimulationEnvelopeProto instance
+                         */
+                        static create(properties: org.example.springbootbackend.model.proto.LiveSimulationEnvelopeProto.$Shape): org.example.springbootbackend.model.proto.LiveSimulationEnvelopeProto & org.example.springbootbackend.model.proto.LiveSimulationEnvelopeProto.$Shape;
+                        static create(properties?: org.example.springbootbackend.model.proto.LiveSimulationEnvelopeProto.$Properties): org.example.springbootbackend.model.proto.LiveSimulationEnvelopeProto;
+
+                        /**
+                         * Encodes the specified LiveSimulationEnvelopeProto message. Does not implicitly {@link org.example.springbootbackend.model.proto.LiveSimulationEnvelopeProto.verify|verify} messages.
+                         * @param message LiveSimulationEnvelopeProto message or plain object to encode
+                         * @param [writer] Writer to encode to
+                         * @returns Writer
+                         */
+                        static encode(message: org.example.springbootbackend.model.proto.LiveSimulationEnvelopeProto.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                        /**
+                         * Encodes the specified LiveSimulationEnvelopeProto message, length delimited. Does not implicitly {@link org.example.springbootbackend.model.proto.LiveSimulationEnvelopeProto.verify|verify} messages.
+                         * @param message LiveSimulationEnvelopeProto message or plain object to encode
+                         * @param [writer] Writer to encode to
+                         * @returns Writer
+                         */
+                        static encodeDelimited(message: org.example.springbootbackend.model.proto.LiveSimulationEnvelopeProto.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                        /**
+                         * Decodes a LiveSimulationEnvelopeProto message from the specified reader or buffer.
+                         * @param reader Reader or buffer to decode from
+                         * @param [length] Message length if known beforehand
+                         * @returns {org.example.springbootbackend.model.proto.LiveSimulationEnvelopeProto & org.example.springbootbackend.model.proto.LiveSimulationEnvelopeProto.$Shape} LiveSimulationEnvelopeProto
+                         * @throws {Error} If the payload is not a reader or valid buffer
+                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                         */
+                        static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): org.example.springbootbackend.model.proto.LiveSimulationEnvelopeProto & org.example.springbootbackend.model.proto.LiveSimulationEnvelopeProto.$Shape;
+
+                        /**
+                         * Decodes a LiveSimulationEnvelopeProto message from the specified reader or buffer, length delimited.
+                         * @param reader Reader or buffer to decode from
+                         * @returns {org.example.springbootbackend.model.proto.LiveSimulationEnvelopeProto & org.example.springbootbackend.model.proto.LiveSimulationEnvelopeProto.$Shape} LiveSimulationEnvelopeProto
+                         * @throws {Error} If the payload is not a reader or valid buffer
+                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                         */
+                        static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): org.example.springbootbackend.model.proto.LiveSimulationEnvelopeProto & org.example.springbootbackend.model.proto.LiveSimulationEnvelopeProto.$Shape;
+
+                        /**
+                         * Verifies a LiveSimulationEnvelopeProto message.
+                         * @param message Plain object to verify
+                         * @returns `null` if valid, otherwise the reason why it is not
+                         */
+                        static verify(message: { [k: string]: any }): (string|null);
+
+                        /**
+                         * Creates a LiveSimulationEnvelopeProto message from a plain object. Also converts values to their respective internal types.
+                         * @param object Plain object
+                         * @returns LiveSimulationEnvelopeProto
+                         */
+                        static fromObject(object: { [k: string]: any }): org.example.springbootbackend.model.proto.LiveSimulationEnvelopeProto;
+
+                        /**
+                         * Creates a plain object from a LiveSimulationEnvelopeProto message. Also converts values to other types if specified.
+                         * @param message LiveSimulationEnvelopeProto
+                         * @param [options] Conversion options
+                         * @returns Plain object
+                         */
+                        static toObject(message: org.example.springbootbackend.model.proto.LiveSimulationEnvelopeProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                        /**
+                         * Converts this LiveSimulationEnvelopeProto to JSON.
+                         * @returns JSON object
+                         */
+                        toJSON(): { [k: string]: any };
+
+                        /**
+                         * Gets the type url for LiveSimulationEnvelopeProto
+                         * @param [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+                         * @returns The type url
+                         */
+                        static getTypeUrl(prefix?: string): string;
+                    }
+
+                    namespace LiveSimulationEnvelopeProto {
+
+                        /** Properties of a LiveSimulationEnvelopeProto. */
+                        interface $Properties {
+
+                            /** LiveSimulationEnvelopeProto chunkSize */
+                            chunkSize?: (number|null);
+
+                            /** LiveSimulationEnvelopeProto isLastChunk */
+                            isLastChunk?: (boolean|null);
+
+                            /** LiveSimulationEnvelopeProto payload */
+                            payload?: (org.example.springbootbackend.model.proto.LiveTransactionEventProto.$Properties[]|null);
+
+                            /** Unknown fields preserved while decoding when enabled */
+                            $unknowns?: Uint8Array[];
+                        }
+
+                        /** Shape of a LiveSimulationEnvelopeProto. */
+                        type $Shape = org.example.springbootbackend.model.proto.LiveSimulationEnvelopeProto.$Properties;
+                    }
+
+                    /**
+                     * Properties of a LiveInferenceEventProto.
+                     * @deprecated Use org.example.springbootbackend.model.proto.LiveInferenceEventProto.$Properties instead.
+                     */
+                    interface ILiveInferenceEventProto extends org.example.springbootbackend.model.proto.LiveInferenceEventProto.$Properties {
+                    }
+
+                    /** Represents a LiveInferenceEventProto. */
+                    class LiveInferenceEventProto {
+
+                        /**
+                         * Constructs a new LiveInferenceEventProto.
+                         * @param [properties] Properties to set
+                         */
+                        constructor(properties?: org.example.springbootbackend.model.proto.LiveInferenceEventProto.$Properties);
+
+                        /** Unknown fields preserved while decoding when enabled */
+                        $unknowns?: Uint8Array[];
+
+                        /** LiveInferenceEventProto txnId. */
+                        txnId: string;
+
+                        /** LiveInferenceEventProto txnAmt. */
+                        txnAmt: number;
+
+                        /** LiveInferenceEventProto accType. */
+                        accType: string;
+
+                        /** LiveInferenceEventProto accAge. */
+                        accAge: number;
+
+                        /** LiveInferenceEventProto flaggedTxns. */
+                        flaggedTxns: number;
+
+                        /** LiveInferenceEventProto merchantType. */
+                        merchantType: string;
+
+                        /** LiveInferenceEventProto geoCountryMismatch. */
+                        geoCountryMismatch: boolean;
+
+                        /** LiveInferenceEventProto geoDistanceKm. */
+                        geoDistanceKm: number;
+
+                        /** LiveInferenceEventProto timeGapLastTxn. */
+                        timeGapLastTxn: (number|Long);
+
+                        /** LiveInferenceEventProto isAbnormalTime. */
+                        isAbnormalTime: boolean;
+
+                        /** LiveInferenceEventProto highTxnVelocity. */
+                        highTxnVelocity: boolean;
+
+                        /** LiveInferenceEventProto userAtvDelta. */
+                        userAtvDelta: number;
+
+                        /** LiveInferenceEventProto isNewDevice. */
+                        isNewDevice: boolean;
+
+                        /** LiveInferenceEventProto speedKmh. */
+                        speedKmh: number;
+
+                        /** LiveInferenceEventProto fraudScore. */
+                        fraudScore: number;
+
+                        /** LiveInferenceEventProto status. */
+                        status: string;
+
+                        /** LiveInferenceEventProto clientId. */
+                        clientId: string;
+
+                        /**
+                         * Creates a new LiveInferenceEventProto instance using the specified properties.
+                         * @param [properties] Properties to set
+                         * @returns LiveInferenceEventProto instance
+                         */
+                        static create(properties: org.example.springbootbackend.model.proto.LiveInferenceEventProto.$Shape): org.example.springbootbackend.model.proto.LiveInferenceEventProto & org.example.springbootbackend.model.proto.LiveInferenceEventProto.$Shape;
+                        static create(properties?: org.example.springbootbackend.model.proto.LiveInferenceEventProto.$Properties): org.example.springbootbackend.model.proto.LiveInferenceEventProto;
+
+                        /**
+                         * Encodes the specified LiveInferenceEventProto message. Does not implicitly {@link org.example.springbootbackend.model.proto.LiveInferenceEventProto.verify|verify} messages.
+                         * @param message LiveInferenceEventProto message or plain object to encode
+                         * @param [writer] Writer to encode to
+                         * @returns Writer
+                         */
+                        static encode(message: org.example.springbootbackend.model.proto.LiveInferenceEventProto.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                        /**
+                         * Encodes the specified LiveInferenceEventProto message, length delimited. Does not implicitly {@link org.example.springbootbackend.model.proto.LiveInferenceEventProto.verify|verify} messages.
+                         * @param message LiveInferenceEventProto message or plain object to encode
+                         * @param [writer] Writer to encode to
+                         * @returns Writer
+                         */
+                        static encodeDelimited(message: org.example.springbootbackend.model.proto.LiveInferenceEventProto.$Properties, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                        /**
+                         * Decodes a LiveInferenceEventProto message from the specified reader or buffer.
+                         * @param reader Reader or buffer to decode from
+                         * @param [length] Message length if known beforehand
+                         * @returns {org.example.springbootbackend.model.proto.LiveInferenceEventProto & org.example.springbootbackend.model.proto.LiveInferenceEventProto.$Shape} LiveInferenceEventProto
+                         * @throws {Error} If the payload is not a reader or valid buffer
+                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                         */
+                        static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): org.example.springbootbackend.model.proto.LiveInferenceEventProto & org.example.springbootbackend.model.proto.LiveInferenceEventProto.$Shape;
+
+                        /**
+                         * Decodes a LiveInferenceEventProto message from the specified reader or buffer, length delimited.
+                         * @param reader Reader or buffer to decode from
+                         * @returns {org.example.springbootbackend.model.proto.LiveInferenceEventProto & org.example.springbootbackend.model.proto.LiveInferenceEventProto.$Shape} LiveInferenceEventProto
+                         * @throws {Error} If the payload is not a reader or valid buffer
+                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                         */
+                        static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): org.example.springbootbackend.model.proto.LiveInferenceEventProto & org.example.springbootbackend.model.proto.LiveInferenceEventProto.$Shape;
+
+                        /**
+                         * Verifies a LiveInferenceEventProto message.
+                         * @param message Plain object to verify
+                         * @returns `null` if valid, otherwise the reason why it is not
+                         */
+                        static verify(message: { [k: string]: any }): (string|null);
+
+                        /**
+                         * Creates a LiveInferenceEventProto message from a plain object. Also converts values to their respective internal types.
+                         * @param object Plain object
+                         * @returns LiveInferenceEventProto
+                         */
+                        static fromObject(object: { [k: string]: any }): org.example.springbootbackend.model.proto.LiveInferenceEventProto;
+
+                        /**
+                         * Creates a plain object from a LiveInferenceEventProto message. Also converts values to other types if specified.
+                         * @param message LiveInferenceEventProto
+                         * @param [options] Conversion options
+                         * @returns Plain object
+                         */
+                        static toObject(message: org.example.springbootbackend.model.proto.LiveInferenceEventProto, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                        /**
+                         * Converts this LiveInferenceEventProto to JSON.
+                         * @returns JSON object
+                         */
+                        toJSON(): { [k: string]: any };
+
+                        /**
+                         * Gets the type url for LiveInferenceEventProto
+                         * @param [prefix] Custom type url prefix, defaults to `"type.googleapis.com"`
+                         * @returns The type url
+                         */
+                        static getTypeUrl(prefix?: string): string;
+                    }
+
+                    namespace LiveInferenceEventProto {
+
+                        /** Properties of a LiveInferenceEventProto. */
+                        interface $Properties {
+
+                            /** LiveInferenceEventProto txnId */
+                            txnId?: (string|null);
+
+                            /** LiveInferenceEventProto txnAmt */
+                            txnAmt?: (number|null);
+
+                            /** LiveInferenceEventProto accType */
+                            accType?: (string|null);
+
+                            /** LiveInferenceEventProto accAge */
+                            accAge?: (number|null);
+
+                            /** LiveInferenceEventProto flaggedTxns */
+                            flaggedTxns?: (number|null);
+
+                            /** LiveInferenceEventProto merchantType */
+                            merchantType?: (string|null);
+
+                            /** LiveInferenceEventProto geoCountryMismatch */
+                            geoCountryMismatch?: (boolean|null);
+
+                            /** LiveInferenceEventProto geoDistanceKm */
+                            geoDistanceKm?: (number|null);
+
+                            /** LiveInferenceEventProto timeGapLastTxn */
+                            timeGapLastTxn?: (number|Long|null);
+
+                            /** LiveInferenceEventProto isAbnormalTime */
+                            isAbnormalTime?: (boolean|null);
+
+                            /** LiveInferenceEventProto highTxnVelocity */
+                            highTxnVelocity?: (boolean|null);
+
+                            /** LiveInferenceEventProto userAtvDelta */
+                            userAtvDelta?: (number|null);
+
+                            /** LiveInferenceEventProto isNewDevice */
+                            isNewDevice?: (boolean|null);
+
+                            /** LiveInferenceEventProto speedKmh */
+                            speedKmh?: (number|null);
+
+                            /** LiveInferenceEventProto fraudScore */
+                            fraudScore?: (number|null);
+
+                            /** LiveInferenceEventProto status */
+                            status?: (string|null);
+
+                            /** LiveInferenceEventProto clientId */
+                            clientId?: (string|null);
+
+                            /** Unknown fields preserved while decoding when enabled */
+                            $unknowns?: Uint8Array[];
+                        }
+
+                        /** Shape of a LiveInferenceEventProto. */
+                        type $Shape = org.example.springbootbackend.model.proto.LiveInferenceEventProto.$Properties;
+                    }
+                }
+
                 /**
                  * Properties of a TransactionProtoMsg.
                  * @deprecated Use org.example.springbootbackend.model.TransactionProtoMsg.$Properties instead.

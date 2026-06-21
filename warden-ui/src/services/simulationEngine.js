@@ -146,3 +146,4 @@ export const generateTransactionsFromDbPool = (dbUsersPool, targetRowCount) => {
 
     return transactions;
 };
+

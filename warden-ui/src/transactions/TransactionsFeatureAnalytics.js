@@ -517,7 +517,7 @@ function TransactionsFeatureAnalytics({transactionsData, usersData}) {
                 tick={{fontSize: 12}}
                 angle={-55}
                 textAnchor="end"
-                height={70}
+                height={60}
               />
 
               {/* left Y-asix for histogram bars */}
@@ -588,7 +588,7 @@ function TransactionsFeatureAnalytics({transactionsData, usersData}) {
                 tick={{fontSize: 11}}
                 angle={-45}
                 textAnchor="end"
-                height={70}
+                height={60}
               />
 
               {/* left Y-asix for histogram bars */}
@@ -763,7 +763,7 @@ function TransactionsFeatureAnalytics({transactionsData, usersData}) {
 
               {/* 255, 118, 193*/}
               <Bar dataKey="CROSSBORDER" stackId="a" fill="rgb(254, 92, 92)" />
-              <Bar dataKey="NATIONAL" stackId="a" fill="rgb(99, 112, 255)" />
+              <Bar dataKey="NATIONAL" stackId="a" fill="rgb(93, 155, 255)" />
               <Bar radius={[3, 3, 0, 0]} dataKey="SAME" stackId="a" fill="rgb(49, 213, 49)" />
             </BarChart>
           </ResponsiveContainer>
@@ -797,7 +797,7 @@ function TransactionsFeatureAnalytics({transactionsData, usersData}) {
                 tick={{fontSize: 11}}
                 angle={-45}
                 textAnchor="end"
-                height={70}
+                height={60}
               />
 
               {/* left Y-asix for histogram bars */}
@@ -865,7 +865,7 @@ function TransactionsFeatureAnalytics({transactionsData, usersData}) {
                 tick={{fontSize: 11}}
                 angle={-45}
                 textAnchor="end"
-                height={65}
+                height={60}
               />
 
               {/* left Y-asix for histogram bars */}
@@ -904,7 +904,7 @@ function TransactionsFeatureAnalytics({transactionsData, usersData}) {
           </ResponsiveContainer>
         </div>
 
-        {/* 7. userAtvDelta by accType */}
+        {/* 7. userAtvDelta by accType
         <div className="analytics-plot">
           <div className="analytics-plot-header">
             <p>userAtvDelta by accType</p>
@@ -935,14 +935,13 @@ function TransactionsFeatureAnalytics({transactionsData, usersData}) {
                 height={65}
               />
 
-              {/* left Y-asix for histogram bars */}
               <YAxis yAxisId="left"
               orientation="left" stroke="rgb(49, 213, 49)" 
               tick={{fontSize: 13}}
               scale="sqrt"
               domain={[0, "auto"]}
               label={{value: 'Count', angle: -90, position: 'insideLeft', fontSize: 14}}/>
-              {/* right Y-axis for density line (0 to 1) */}
+            
               <YAxis yAxisId="right" orientation="right" stroke="rgb(126, 222, 96)" 
               tick={{fontSize: 13}}
               scale="sqrt"
@@ -969,15 +968,16 @@ function TransactionsFeatureAnalytics({transactionsData, usersData}) {
                 name="KDE (Density)" />
             </ComposedChart>
           </ResponsiveContainer>
-        </div>
+        </div> */}
 
+        {/* Transactions data Behavioral Heatmap*/}
         <div className="analytics-plot heat-map">
           <p>Transaction Behavioral Correlation Matrix</p>
           <div className="heat-map-wrapper">
             <ResponsiveHeatMap
               theme={theme}
               data={matrixData}
-              margin={{ top: 45, right: 40, bottom: 45, left: 110 }}
+              margin={{ top: 45, right: 40, bottom: 45, left: 100 }}
               valueFormat=">-.2f"
               axisTop={{ tickSize: 5, tickPadding: 5, tickRotation: -20 }}
               axisLeft={{ tickSize: 5, tickPadding: 5, tickRotation: 0 }}

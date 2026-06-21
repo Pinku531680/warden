@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poiret+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Borel&family=Mystery+Quest&family=Princess+Sofia&display=swap');
 
+/* In your CSS file */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -14,4 +17,324 @@ body {
 :root {
     --primary-color: rgb(49, 213, 49);
     --width: 90%
+}
+
+.model-insights {
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    flex-direction: column;
+    border: 1.5px solid rgb(49, 213, 49);
+    border: none;
+    background: rgba(49, 213, 49, 0.1);
+    border-radius: 3px;
+    width: var(--width);
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    /* height: 600px; */
+    padding: 10px 10px;
+    box-sizing: border-box;
+}
+
+.model-insights-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    color: rgb(45, 45, 45);
+    color: var(--primary-color);
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+
+.custom-select-wrapper {
+    position: relative;
+    display: inline-block;
+    user-select: none;
+    z-index: 100; /* Guarantees expanded elements float perfectly above logging line bars */
+}
+
+/* Green Color First: Themes the standard rest trigger component state */
+.dropdown-trigger-face {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    height: 30px;
+    padding: 0 4px;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--primary-color); /* Uses your primary tracking green color rule */
+    transition: transform 0.1s ease;
+}
+
+
+.dropdown-trigger-face:hover {
+    opacity: 1;
+}
+
+/* White Background Layer: Houses option rows within a clean crisp isolated layout container */
+.dropdown-options-overlay-sheet {
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    width: 170px;
+    background: #ffffff; /* Crisp white overlay backdrop */
+    border: 1px solid var(--primary-color); /* Clean green structural border */
+    border-radius: 2px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15); /* Soft, professional floating shadows */
+    overflow: hidden;
+    animation: menuFadeInReveal 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Individual option line layout constraints */
+.dropdown-options-overlay-sheet .individual-option-row {
+    font-family: "Poppins", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+    padding: 8px 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.1s ease;
+}
+
+/* Green Again On Hover: Sweeps options with a vibrant green backdrop matrix tint on hover tracking */
+.dropdown-options-overlay-sheet .individual-option-row:hover {
+    background: var(--primary-color); /* Solid high-contrast thematic color backdrop */
+    color: #ffffff;                  /* Swaps string text to clean readable white lines */
+}
+
+/* Active option parameter state accent styling */
+.dropdown-options-overlay-sheet .individual-option-row.selected-row-match {
+    background: rgba(49, 213, 49, 0.15);
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Entry layer presentation micro-animations */
+@keyframes menuFadeInReveal {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.emission-status-section {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    margin-right: auto;
+    margin-bottom: 5px;
+    gap: 10px;
+    background: white;
+    padding: 3px 5px;
+    box-sizing: border-box;
+    border-radius: 2px;
+}
+
+.emission-status-section p {
+    font-family: "Poppins", sans-serif;
+    color: rgb(45, 45, 45);
+    font-size: 15px;
+}
+
+.emission-status-section span {
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.logging-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: calc(100% - 6px);
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    border: 3px solid white;
+    border-radius: 2px;
+}
+
+.logging-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    background: white;
+    width: 100%;
+    padding: 0px 8px;
+    box-sizing: border-box;
+    height: 32px;
+}
+
+.logging-section-header .log-type {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    background: rgb(49, 213, 49);
+    color: white;
+    padding: 1px 3px;
+    border-radius: 2px;
+}
+
+.log-type span {
+    margin: 0;
+}
+
+.logging-section .logs {
+    display: flex;
+    align-items: start;
+    justify-content: flex-start;
+    flex-direction: column;
+    height: 350px;
+    overflow-y: auto;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    background: white;
+}
+
+.logs .no-logs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(49, 213, 49);
+    padding: 3px 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 2px;
+}
+.no-logs p {
+    font-family: "Poppins", sans-serif;
+    color: white
+}
+
+.logging-section .logs::-webkit-scrollbar {
+    width: 8px;
+}
+
+.logging-section .logs::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+}
+
+.logging-section .logs::-webkit-scrollbar-thumb {
+    background: rgba(49, 213, 49, 0.6); /* Matches your Warden green baseline theme */
+    border-radius: 2px;
+    border: 1px solid transparent;
+}
+
+.logging-section .logs::-webkit-scrollbar-thumb:hover {
+    background: rgba(49, 213, 49, 0.75);
+}
+
+
+.logs .each-log {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
+    background: rgb(49, 213, 49);
+    height: 32px;
+    width: 100%;
+    padding: 0px 8px;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.each-log .log-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: orange;
+    padding: 2px 3px;
+    border-radius: 2px;
+    color: rgb(255, 255, 255);
+    font-size: 13px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+}
+
+.each-log .log-time {
+    font-size: 14px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    color: rgb(55, 55, 55);
+    letter-spacing: 0.5px;
+}
+
+.each-log .log-message {
+    font-size: 14px;
+    color: rgb(45, 45, 45);
+}
+
+.metrics-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    background: white;
+    padding: 4px 7px;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 2px;
+}
+
+.metrics-section .metrics-section-header {
+    width: 100%;
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    color: rgb(49, 213, 49);
+    font-weight: 500;
+}
+
+.metrics-section .metrics {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    /* border: 1px solid gray; */
+    gap: 70px;
+    margin-top: 10px;
+}
+
+.metrics #metrics-right, .metrics #metrics-left {
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.metrics .each-metric {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
+    font-family: "Poppins", sans-serif;
+    font-size: 15px;
+    color: rgb(45, 45, 45);
+}
+
+.each-metric span {
+    font-weight: 500;
 }

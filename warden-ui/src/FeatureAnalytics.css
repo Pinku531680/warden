@@ -40,13 +40,16 @@ body {
 .feature-analytics-header {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
     font-family: "Poppins", sans-serif;
     font-size: 16px;
     color: rgb(45, 45, 45);
     color: var(--primary-color);
     font-weight: 500;
     margin-bottom: 20px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .feature-analytics .analytics-section {
@@ -134,8 +137,28 @@ body {
 }
 
 
+/*
+   WIDESCREEN RESPONSIVE INGESTION PANEL GRID LAYOUT
+   Fires only when viewport width exceeds 1080px boundary limits.
+ */
+@media (min-width: 1081px) {
+    .feature-analytics .analytics-section {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Exactly 2 equal-width columns per row */
+        gap: 24px;                             /* Uniform spacing between adjacent plots */
+        align-items: stretch;                  /* Allows plots to stretch uniformly to match heights */
+        width: 98%;
+    }
 
+    .analytics-section .analytics-plot {
+        width: 100%;       /* Overrides the default 90% restriction to fill grid tracks cleanly */
+        box-sizing: border-box;
+    }
 
+    .feature-analytics-header {
+        width: 98%;
+    }
+}
 
 
 
