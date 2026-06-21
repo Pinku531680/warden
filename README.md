@@ -1,10 +1,12 @@
 > [!IMPORTANT]
 > **Readme Status:** Docs is currently in progress.
 
-# Warden: Distributed Real-Time Fraud Detection System
+# Warden: High-Throughput Distributed Engine for Real-Time Transaction Fraud Inference
 
-#### Warden is a high-performance fraud detection ecosystem designed to identify anomalous transaction patterns through distributed orchestration and machine learning. It covers the full lifecycle from synthetic data generation to explainable ML-driven inference.
+#### A high-throughput, microservices-driven event streaming pipeline engineered for real-time financial transaction fraud detection. Built with Spring Boot, FastAPI, and RabbitMQ, the system implements a closed-loop architecture featuring client-side reactive backpressure, low-latency micro-batched LightGBM inference, and server-side self-healing worker layers.
 
+## **Live Demo & Observability Walkthrough**
+<video src="https://drive.google.com/file/d/167xF0HMN-_yCuXy2tLCkVeZcQX8R4nPX/view?usp=sharing" width="100%" controls></video>
 
 ## **Architecture Overview**
 
