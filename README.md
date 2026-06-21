@@ -38,7 +38,7 @@ Built from scratch without heavy third-party UI frameworks, the frontend operate
 
 The machine learning pipeline is intentionally separated from the core data paths to ensure that training and evaluation never block live system ingestion.
    - **Isolated Architecture**: Operates independently of the database and web servers, interacting solely with the message broker to ensure        absolute resource isolation.
-   - **High-Performance LightGBM Core**: Consumes transaction bytes directly from RabbitMQ and runs high-speed micro-batched evaluations using      a trained LightGBM classifier, combining the high accuracy of gradient boosting with sub-millisecond execution times.
+   - **Latency-Bound Micro-Batching Core**: Consumes transaction bytes directly from RabbitMQ and runs high-speed micro-batched evaluations         using a trained LightGBM classifier. A background timer daemon forces immediate evaluations if data dries up, combining the high accuracy      of gradient boosting with sub-millisecond execution times.
    - **Verdict Relinquishment**: Pushes completed fraud prediction records onto the dedicated RabbitMQ results queue, handing execution             control cleanly back to the Spring Boot response infrastructure.
     
 
