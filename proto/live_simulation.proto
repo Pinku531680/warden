@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package org.example.springbootbackend.model.proto;
+
+option java_multiple_files = true;
+option java_package = "org.example.springbootbackend.model.proto";
+option java_outer_classname = "LiveSimulationProto";
+
+// A single raw transaction event emitted from the client frontend application
+message LiveTransactionEventProto {
+    int32 userId = 1;
+    string txnId = 2;
+    int32 txnAmt = 3;
+    int64 txnTimeUTC = 4;
+    int32 txnTimeLocalHour = 5;
+    float txnLat = 6;
+    float txnLon = 7;
+    string txnCountry = 8;
+    string merchantType = 9;
+    string deviceId = 10;
+}
+
+// Stream envelope to allow optional batch streaming during live simulations
+message LiveSimulationEnvelopeProto {
+    int32 chunkSize = 1;
+    bool isLastChunk = 2;
+    repeated LiveTransactionEventProto payload = 3;
+}
+
+// STREAMLINED INFERENCE MATRIX CONTRACT
+// Contains strictly the features required by LightGBM + relational lookup contexts
+message LiveInferenceEventProto {
+    string txnId = 1;              // Required for database row lookups upon return
+    int32 txnAmt = 2;
+    string accType = 3;
+    int32 accAge = 4;
+    int32 flaggedTxns = 5;
+    string merchantType = 6;
+    bool geoCountryMismatch = 7;
+    int32 geoDistanceKm = 8;
+    int64 timeGapLastTxn = 9;
+    bool isAbnormalTime = 10;
+    bool highTxnVelocity = 11;
+    float userAtvDelta = 12;
+    bool isNewDevice = 13;
+    int32 speedKmh = 14;
+    float fraudScore = 15;         // Target metadata placeholder
+    string status = 16;            // Target metadata placeholder
+    string clientId = 17;          // WebSocket session router context
+}
+
