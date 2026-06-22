@@ -59,13 +59,20 @@ This section details the underlying infrastructure mechanics engineered to maxim
    - **The Optimization:** Configured all RabbitMQ queues and routing keys as non-durable and transient, forcing messages to reside entirely   within RAM allocators.
    - **The Impact:** Standard message streaming architectures write payloads to disk to survive unexpected broker crashes, but this forces the operating system to perform **expensive disk-flush** (`fsync`) operations that severely **limit message throughput**. Because the Spring Boot ingestion layer writes every inbound transaction to **PostgreSQL immediately upon arrival**, the database already serves as our **durable, persistent log**. Making RabbitMQ write to disk as well would create a **redundant, double-logging penalty across the system**. If the broker crashes and loses its memory frames, **the server-side watchdog service seamlessly recovers** the lost state by scanning the database log and re-injecting any uncompleted rows.
 
-## **Tech Stack**
+## **Data Plane & Tech Stack**
 
-**Backend**: Spring Boot, Java, PostgreSQL, Redis
+### Data & State Infrastructure
+* **PostgreSQL:** Serves as the persistent operational audit log and master ledger for all inbound transactions.
+* **Redis Cloud:** Utilized as an ultra-low-latency distributed cache layer to handle initial idempotency checks and store real-time user state baselines.
+* **RabbitMQ:** Implements asynchronous, decoupled message lines using transient AMQP channels to isolate ingestion from heavy inference compute loops.
 
-**Machine Learning**: Python (FastAPI), Scikit-Learn, LightGBM
+### Core Compute & Inference Core
+* **Spring Boot:** Handles the high-frequency WebSocket connection lifecycle, Protobuf parsing, and fast transactional database operations.
+* **Python Service (FastAPI):** Hosts the stateless ML worker endpoints, consuming binary vectors directly from the broker lines.
+* **LightGBM:** Serves as the core binary classification engine, chosen to leverage gradient boosting parallelism at sub-millisecond execution speeds.
 
-**Message Broker**: RabbitMQ
-
-**Frontend**: React.js, Recharts, and Nivo (for visualization of feature analytics)
+### Telemetry & Visualization
+* **React.js:** Operates as the lightweight client dashboard core, written without third-party design frameworks to keep strict control over DOM rendering loops.
+* **Recharts & Nivo:** Used to render highly optimized, hardware-accelerated SVG/Canvas visualizations for live feature distributions and statistical anomalies.
+* **Google Protocol Buffers (Proto3):** Enforces a strict, cross-language binary serialization schema across the frontend, backend, and machine learning runtimes.
 
