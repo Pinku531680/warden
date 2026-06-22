@@ -41,7 +41,7 @@ The machine learning pipeline is intentionally separated from the core data path
    - **Latency-Bound Micro-Batching Core**: Consumes transaction bytes directly from RabbitMQ and **runs high-speed micro-batched evaluations         using a trained LightGBM classifier**. A background timer daemon forces immediate evaluations if data dries up, combining the high             accuracy of gradient boosting with sub-millisecond execution times.
    - **Verdict Relinquishment**: Pushes completed fraud prediction records onto the dedicated RabbitMQ results queue, handing execution             control cleanly back to the Spring Boot response infrastructure.
     
-## **Architectural Decisions & System Trade-offs**
+## **System Optimizations & Impact**
 A distributed pipeline cannot maximize all performance metrics concurrently. Warden balances throughput, resource saturation, and delivery guarantees through deliberate design trade-offs:
 
 ### 1. Protobuf Binary Packing vs. JSON
