@@ -42,7 +42,7 @@ The machine learning pipeline is intentionally separated from the core data path
    - **Verdict Relinquishment**: Pushes completed fraud prediction records onto the dedicated RabbitMQ results queue, handing execution             control cleanly back to the Spring Boot response infrastructure.
     
 ## **System Optimizations & Impact**
-A distributed pipeline cannot maximize all performance metrics concurrently. Warden balances throughput, resource saturation, and delivery guarantees through deliberate design trade-offs:
+This section details the underlying infrastructure mechanics engineered to maximize processing throughput while enforcing strict message delivery and data-plane reliability.
 
 ### 1. Protobuf Binary Packing vs. JSON
    - **The Optimization**: Replaced standard textual JSON with compiled Protocol Buffers over WebSockets. This **compresses the inbound               transaction payload size by ~60-75% for our schemas** `LiveInferenceEventProto` and `LiveTransactionEventProto`.
