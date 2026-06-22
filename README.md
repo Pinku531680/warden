@@ -42,30 +42,6 @@ The machine learning pipeline is intentionally separated from the core data path
    - **Verdict Relinquishment**: Pushes completed fraud prediction records onto the dedicated RabbitMQ results queue, handing execution             control cleanly back to the Spring Boot response infrastructure.
     
 
-
-## **Key Features**
-
-**1. Data Generation & Pipelines**
-   
-**Adversarial Simulation**: Custom pipelines to generate realistic "Attack" scenarios, including ***Impossible Travel (high-speed GPS shifts)***, ***Behavioral Anomalies***, ***Temporal Deviations (odd-hour transactions mapped to local timezones)***, and ***Statistical Surges***.
-
-**Feature Analytics**: Integrated pre-simulation tools to analyze feature distributions before they hit the inference engine.
-
-**2. High-Performance Orchestration**
-   
-**Feature Engineering**: Real-time calculation of ATV Delta, Geodesic Distance, and Temporal Velocity using Redis for low-latency state lookups.
-
-**Reliability & Idempotency**: Custom logic to prevent duplicate processing and a 15-second watchdog timer that re-queues lost transactions to ensure guaranteed processing.
-
-**3. Explainable ML Inference**
-   
-**Probabilistic Scoring**: Moves beyond binary classification to provide a raw fraud probability (0.0 to 1.0).
-
-**Model Explainability**: Generates basic natural language reasons for every decision.
-
-**Real-time Loop**: Inferences are pushed back to the UI via the backend for logging and post-simulation analytics.
-
-
 ## **Tech Stack**
 
 **Backend**: Spring Boot, Java, PostgreSQL, Redis
