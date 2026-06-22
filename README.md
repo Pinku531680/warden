@@ -61,17 +61,17 @@ This section details the underlying infrastructure mechanics engineered to maxim
 
 ## **Data Plane & Tech Stack**
 
-### Data & State Infrastructure
+### 1. Data & State Infrastructure
 * **PostgreSQL:** Serves as the persistent operational audit log and master ledger for all inbound transactions.
 * **Redis Cloud:** Utilized as an ultra-low-latency distributed cache layer to handle initial idempotency checks and store real-time user state baselines.
 * **RabbitMQ:** Implements asynchronous, decoupled message lines using transient AMQP channels to isolate ingestion from heavy inference compute loops.
 
-### Core Compute & Inference Core
+### 2. Core Compute & Inference Core
 * **Spring Boot:** Handles the high-frequency WebSocket connection lifecycle, Protobuf parsing, and fast transactional database operations.
 * **Python Service (FastAPI):** Hosts the stateless ML worker endpoints, consuming binary vectors directly from the broker lines.
 * **LightGBM:** Serves as the core binary classification engine, chosen to leverage gradient boosting parallelism at sub-millisecond execution speeds.
 
-### Telemetry & Visualization
+### 3. Telemetry & Visualization
 * **React.js:** Operates as the lightweight client dashboard core, written without third-party design frameworks to keep strict control over DOM rendering loops.
 * **Recharts & Nivo:** Used to render highly optimized, hardware-accelerated SVG/Canvas visualizations for live feature distributions and statistical anomalies.
 * **Google Protocol Buffers (Proto3):** Enforces a strict, cross-language binary serialization schema across the frontend, backend, and machine learning runtimes.
