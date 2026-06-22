@@ -76,3 +76,14 @@ This section details the underlying infrastructure mechanics engineered to maxim
 * **Protocol Buffers:** Enforces a strict, cross-language binary serialization schema across the system, enabling low-overhead, chunked data emission from the client to the gateway.
 * **Recharts & Nivo:** Used to render highly optimized, hardware-accelerated visualizations for live feature distributions and statistical anomalies.
 
+## **Architectural Takeaways & Learnings**
+Building Warden required moving past basic framework abstractions to confront the core realities of distributed infrastructure design. Below are the foundational paradigms and engineering truths established through this project:
+
+### 1. The Reality of Message Queues (Buffers, Not Magic)
+* **The Insight:** Message queues are not bulletproof architectural black boxes—they are finite, memory-allocated network buffers. If downstream consumers lag or crash during a massive stream ingestion, an unprotected queue will face RAM exhaustion or force destructive disk paging. 
+* **The Solution:** Systems must be designed assuming the broker *will* fail or drop frames at scale. This reality drove the implementation of the backend watchdog layer to guarantee state reconstruction when volatile memory layers are cleared.
+
+### 2. Deconstructing Exactly-Once Semantics (EOS)
+* **The Insight:** In distributed networks, true network-level "exactly-once delivery" is mathematically impossible due to the Two Generals' Problem. 
+* **The Solution:** Warden achieves **Effectively Exactly-Once Semantics** by breaking the problem down into an infrastructure equation: 
+  $$\text{Exactly-Once Semantics} = \text{At-Least-Once Delivery (Client/Server Watchdogs)} + \text{Idempotent Processing (Redis/Postgres Constraints)}$$. Forcing the system to cleanly capture and discard unavoidable duplicates at the boundaries is the only way to safeguard state integrity.
