@@ -80,7 +80,7 @@ This section details the underlying infrastructure mechanics engineered to maxim
 Building Warden required moving past basic framework abstractions to confront the core realities of distributed infrastructure design. Below are the foundational paradigms and engineering truths established through this project:
 
 ### 1. The Reality of Message Queues (Buffers, Not Magic)
-* **The Insight:** Message queues are not bulletproof architectural black boxes—they are finite, memory-allocated network buffers. If downstream consumers lag or crash during a massive stream ingestion, an unprotected queue will face RAM exhaustion or force destructive disk paging. 
+* **The Insight:** Message queues are not magical, indestructible black boxes—they are finite, memory-allocated network buffers. If downstream consumers fall behind during a massive stream ingestion, an unprotected queue will either run out of RAM or choke by dumping data onto the disk. 
 * **The Solution:** Systems must be designed assuming the broker *will* fail or drop frames at scale. This reality drove the implementation of the backend watchdog layer to guarantee state reconstruction when volatile memory layers are cleared.
 
 ### 2. Deconstructing Exactly-Once Semantics (EOS)
