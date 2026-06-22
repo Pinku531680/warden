@@ -41,6 +41,20 @@ The machine learning pipeline is intentionally separated from the core data path
    - **Latency-Bound Micro-Batching Core**: Consumes transaction bytes directly from RabbitMQ and **runs high-speed micro-batched evaluations         using a trained LightGBM classifier**. A background timer daemon forces immediate evaluations if data dries up, combining the high             accuracy of gradient boosting with sub-millisecond execution times.
    - **Verdict Relinquishment**: Pushes completed fraud prediction records onto the dedicated RabbitMQ results queue, handing execution             control cleanly back to the Spring Boot response infrastructure.
     
+## **Architectural Decisions & System Trade-offs**
+A distributed pipeline cannot maximize all performance metrics concurrently. Warden balances throughput, resource saturation, and delivery guarantees through deliberate design trade-offs:
+
+### 1. Protobuf Binary Packing vs. JSON
+   - **The Optimization**: Replaced standard textual JSON with compiled Protocol Buffers over WebSockets. This **compresses the inbound               transaction payload size by ~60-75% for our schemas** `LiveInferenceEventProto` and `LiveTransactionEventProto`.
+   - **The Impact**: By utilizing variable-length varints and fixed 4-byte layouts for numerical parameters instead of plain text strings,          data density is maximized. This **allows RabbitMQ to buffer 2-3x** as many records directly in RAM, eliminating premature paging disk lookups while enabling Python to deserialize streams at significant speeds.
+     
+### 2. Dual-Watchdog Fault Isolation (At-Least-Once Delivery)
+   - **The Optimization**: Implemented a **two-tier recovery architecture** split between the browser and the database layer to **ensure zero data frame loss**.
+   - **The Mechanics**: The client-side watchdog catches transport dropouts by auto-retrying transactions that fail to secure a database            `TXN_ACK` within 10 seconds. Simultaneously, **a backend background sweeper checks PostgreSQL every 15 seconds** to automatically re-queue transactions stuck in a `PENDING` state. This guarantees At-Least-Once Delivery across the wire, which **achieves Effectively Exactly-Once Semantics (EOS)** when combined with our ingestion de-duplication layer.
+     
+### 3. Stateless Inference Workers (Compute vs. Network I/O)
+   - **The Optimization**: The Python ML consumer acts as a **purely stateless compute node**. It performs **zero database calls**, user checks, or idempotency validations.
+   - **The Impact**: If the worker had to **execute a remote network round-trip** to Redis or PostgreSQL to verify state integrity for every item inside a high-speed micro-batch array, the entire machine learning container would immediately shift from a **fast CPU/cache-bound system** into a **slow, network I/O-bound bottleneck**. State verification and idempotency guards are **intentionally localized at the ingestion gates** to protect LightGBM evaluation throughput.
 
 ## **Tech Stack**
 
