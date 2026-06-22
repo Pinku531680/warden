@@ -87,5 +87,6 @@ Building Warden required moving past basic framework abstractions to confront th
 * **The Insight:** In distributed networks, true network-level "exactly-once delivery" is mathematically impossible due to the Two Generals' Problem. 
 * **The Solution:** Warden achieves **Effectively Exactly-Once Semantics** by breaking the problem down into an infrastructure equation:
    
-  `Exactly-Once Semantics = At-Least-Once Delivery (Client/Server Watchdogs) + Idempotent Processing (Redis/Postgres Constraints)`
+  `Exactly-Once Semantics = At-Least-Once Delivery (Client/Server Watchdogs) + Idempotent Processing`
+  
   Forcing the system to cleanly capture and discard unavoidable duplicates at the boundaries is the only way to safeguard state integrity.
