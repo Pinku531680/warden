@@ -107,6 +107,23 @@ Building Warden required moving past basic framework abstractions to confront th
 * **The Insight:** Using a machine learning model (like a GAN or an LLM) to generate synthetic data to train another machine learning model creates a dangerous feedback loop. Generative models struggle to accurately map absolute physical laws or strict logical boundaries; instead, they risk introducing hallucinations, smoothing over critical anomalies, and reinforcing hidden assumptions or training biases.
 
   Because these models can only replicate what they have already seen, they are fundamentally incapable of creating completely new variations or true black-swan edge cases. Training a classifier on this data means we are simply teaching it to copy another model's statistical guesswork.
-* **The Systems Payoff:** Building a custom data generation engine natively (warden-ui/src/transactions/transactionsDataGeneration.js) using explicit mathematical functions and statistical distributions is incredibly painful. It requires endless cycles of trial, error, and meticulous parameter tuning to make the simulated behaviors look real. However, the payoff is absolute environmental control: you can manually inject deterministic edge cases, coordinate traps, and rare behavioral velocity spikes.
+* **The Systems Payoff:** Building a custom data generation engine natively (warden-ui/src/transactions/transactionsDataGeneration.js) using explicit mathematical functions and statistical distributions is incredibly painful. It requires endless cycles of trial, error, and meticulous parameter tuning to make the simulated behaviors look real. However, the payoff is absolute environmental control: we can manually inject deterministic edge cases, coordinate traps, and rare behavioral velocity spikes.
 
   This lets us stress-test the data pipelines under harsh, pristine conditions that standard black-box machine learning generators completely fail to capture.
+
+## **Technical References**
+Understanding Warden's architecture required diving into individual engineering articles and video breakdowns of Kafka, RabbitMQ, Flink, Idempotency, Backpressure, etc., and grasping the realities of distributed systems at scale.
+
+* **Idempotency by Arpit Bhayani:** [Idempotency](https://www.youtube.com/watch?v=m6DtqSb1BDM)
+* **Backpressure Mechanics:** [Conduktor: Deep-Dive into Backpressure Handling in Streaming Systems](https://www.conduktor.io/glossary/backpressure-handling-in-streaming-systems)
+* **Architectural Foundations:** [*Streaming Essentials*](https://medium.com/@yaroslavzhbankov/streaming-essentials-types-architectures-and-best-practices-47137df8b9e3)
+* **Redis Internals by Shubham Agrawal:** [Redis Internals](https://medium.com/better-programming/internals-workings-of-redis-718f5871be84)
+* **Message Broker Architecture:** [Message Brokers System Design](https://www.youtube.com/watch?v=1ISRd0bS714)
+* **Protocol Buffers:** [Protocol Buffers Benchmarks](https://entzik.medium.com/json-vs-protocol-buffers-4771762663ea)
+* **Apache Flink by Jordan Epstein:** [Apache Flink Deep Dive](https://www.youtube.com/watch?v=DZwnP_qwAlA)
+
+## **A Note on the Pioneers of Distributed Systems**
+
+Building even a small-scale distributed data system from scratch is a humbling reality check: **distributed infrastructure is a brutal discipline**. It is incredibly easy to import a high-level library or spin up a managed cloud instance with a single click. But stripping away those abstractions forces you to wrestle directly with raw system constraints, revealing the sheer genius of the early engineers who built the foundations of computing from the ground up, even before most modern problems existed.
+
+It is mind-blowing that the core design patterns we rely on today were charted out by brilliant minds long before modern high-performance hardware even existed. This project was a direct exercise in respecting and learning those timeless mechanics first. We stand on the shoulders of giants, looking out at a horizon that has no end. They showed us how to tame the early chaos, but the road ahead remains open. In the physics of data and scale, every solved problem only reveals a wider, undiscovered expanse of the unknown.
