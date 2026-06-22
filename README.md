@@ -81,7 +81,7 @@ Building Warden required moving past basic framework abstractions to confront th
 
 ### 1. The Reality of Message Queues (Buffers, Not Magic)
 * **The Insight:** Message queues are not magical, indestructible black boxes—they are finite, memory-allocated network buffers. If downstream consumers fall behind during a massive stream ingestion, an unprotected queue will either run out of RAM or choke by dumping data onto the disk. 
-* **The Solution:** Systems must be designed assuming the broker *will* fail or drop frames at scale. This reality drove the implementation of the backend watchdog layer to guarantee state reconstruction when volatile memory layers are cleared.
+* **The Solution:** Systems must be designed assuming the broker *will* fail or lose data at scale. This reality drove the implementation of the backend watchdog layer to guarantee state reconstruction if the RAM of the MQ gets wiped.
 
 ### 2. Deconstructing Exactly-Once Semantics (EOS)
 * **The Insight:** In distributed networks, true network-level "exactly-once delivery" is mathematically impossible due to the Two Generals' Problem. 
