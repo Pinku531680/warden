@@ -90,3 +90,15 @@ Building Warden required moving past basic framework abstractions to confront th
   `Exactly-Once Semantics = At-Least-Once Delivery (Client/Server Watchdogs) + Idempotent Processing`
   
   Forcing the system to cleanly capture and discard unavoidable duplicates at the boundaries is the only way to safeguard state integrity.
+
+### 3. Streaming Demands Reactive Flow Control
+* **The Insight:** Data streaming cannot operate reliably as a simple one-way "push" model. Without feedback, a fast client will trivially overwhelm downstream network buffers, database connection pools, and machine learning memory arrays.
+* **The Solution:** Implementing tracking mechanisms like a client-side flight registry for **Reactive Backpressure Handling** is a mandatory prerequisite for stream stability. By tracking unacknowledged frames, the producer can dynamically throttle its own emission pace to perfectly match the real-time processing capacity of the backend.
+
+### 4. Rethinking Queue Durability and I/O Penalties
+* **The Insight:** Defaulting to "durable" queue settings blindly in a message broker creates a hidden performance bottleneck. Forcing a broker to save every single message to disk degrades streaming throughput significantly due to heavy disk I/O overhead.
+* **The Solution:** Since the ingestion gateway already records every transaction directly into **PostgreSQL** the moment it arrives, the database serves as our permanent, secure system record. This allows the broker queues to remain entirely transient (in-memory) for maximum speed. If the broker crashes and loses its memory frames, the recovery responsibility is simply shifted to the database ledger: the background watchdog scans the table and re-injects any uncompleted records, maximizing performance without losing any data.
+
+### 5. Serialization Efficiency: Text vs Binary Density
+* **The Insight:** Sending streaming data as standard JSON text strings creates unnecessary overhead. Carrying full-text field keys (like `"merchantType"` or `"transactionAmount"`) over the network inflates network packet sizes, and converting raw text back into code objects forces the system to waste valuable CPU cycles.
+* **The Solution:** Switching to a binary format like **Protocol Buffers** shrinks our network footprint by ~40–75%. Protobuf achieves this by stripping out all text keys entirely, replacing them with tiny integer tags mapped to a compiled blueprint. Additionally, it packs numerical data directly into dense binary bytes rather than writing out every digit as a text character, allowing our services to unpack incoming streams significantly faster.
