@@ -55,7 +55,7 @@ This section details the underlying infrastructure mechanics engineered to maxim
    - **The Optimization**: The Python ML consumer acts as a **purely stateless compute node**. It performs **zero database calls**, user checks, or idempotency validations.
    - **The Impact**: If the worker had to **execute a remote network round-trip** to Redis or PostgreSQL to verify state integrity for every item inside a high-speed micro-batch array, the entire machine learning container would immediately shift from a **fast CPU/cache-bound system** into a **slow, network I/O-bound bottleneck**. State verification and idempotency guards are **intentionally localized at the ingestion gates** to protect LightGBM evaluation throughput.
 
-### 4. Transient Memory Queues
+### 4. Transient Message Queues for Zero-Disk Streaming Egress
    - **The Optimization:** Configured all RabbitMQ queues and routing keys as non-durable and transient, forcing messages to reside entirely   within RAM allocators.
    - **The Impact:** Standard message streaming architectures write payloads to disk to survive unexpected broker crashes, but this forces the operating system to perform **expensive disk-flush** (`fsync`) operations that severely **limit message throughput**. Because the Spring Boot ingestion layer writes every inbound transaction to **PostgreSQL immediately upon arrival**, the database already serves as our **durable, persistent log**. Making RabbitMQ write to disk as well would create a **redundant, double-logging penalty across the system**. If the broker crashes and loses its memory frames, **the server-side watchdog service seamlessly recovers** the lost state by scanning the database log and re-injecting any uncompleted rows.
 
