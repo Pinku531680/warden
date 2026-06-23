@@ -1,7 +1,7 @@
 
 # Warden: High-Throughput Distributed Engine for Real-Time Transaction Fraud Inference
 
-A high-velocity, distributed system engineered for real-time transaction fraud detection, powered by a **custom data generator instead of standard static datasets**. The architecture enforces strict **upstream flow control** using client-side backpressure tracking, feeding a stateless, micro-batched ML inference core. Protected by a **two-tier idempotency filter** and dual **client/server watchdog safety nets**, the entire execution plane delivers effectively **exactly-once processing** guarantees alongside full, real-time **system observability**.
+A high-throughput distributed system engineered for real-time transaction fraud detection, powered by a **custom data generator instead of standard static datasets**. The architecture enforces strict **upstream flow control** using client-side backpressure tracking, feeding a stateless, micro-batched ML inference core. Protected by a **two-tier idempotency filter** and dual **client/server watchdog safety nets**, the entire execution plane delivers effectively **exactly-once processing** guarantees alongside full, real-time **system observability**.
 
 ## **Live Demo & Observability Walkthrough**
 https://github.com/user-attachments/assets/74a25cc8-4188-4cfa-94f5-fa6e25fd9138
