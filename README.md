@@ -114,7 +114,7 @@ Understanding Warden's architecture required diving into individual engineering 
 
 * **Idempotency by Arpit Bhayani:** [Idempotency](https://www.youtube.com/watch?v=m6DtqSb1BDM)
 * **Backpressure Mechanics:** [Conduktor: Deep-Dive into Backpressure Handling in Streaming Systems](https://www.conduktor.io/glossary/backpressure-handling-in-streaming-systems)
-* **Architectural Foundations:** [*Streaming Essentials*](https://medium.com/@yaroslavzhbankov/streaming-essentials-types-architectures-and-best-practices-47137df8b9e3)
+* **Streaming Essentials:** [*Streaming Essentials*](https://medium.com/@yaroslavzhbankov/streaming-essentials-types-architectures-and-best-practices-47137df8b9e3)
 * **Redis Internals by Shubham Agrawal:** [Redis Internals](https://medium.com/better-programming/internals-workings-of-redis-718f5871be84)
 * **Message Broker Architecture:** [Message Brokers System Design](https://www.youtube.com/watch?v=1ISRd0bS714)
 * **Protocol Buffers:** [Protocol Buffers Benchmarks](https://entzik.medium.com/json-vs-protocol-buffers-4771762663ea)
@@ -124,4 +124,4 @@ Understanding Warden's architecture required diving into individual engineering 
 
 Building even a small-scale distributed data system from scratch is a humbling reality check: **distributed infrastructure is a brutal discipline**. It is incredibly easy to import a high-level library or spin up a managed cloud instance with a single click. But stripping away those abstractions forces you to wrestle directly with raw system constraints, revealing the sheer genius of the early engineers who built the foundations of computing from the ground up, even before most modern problems existed.
 
-It is mind-blowing that the core design patterns we rely on today were charted out by brilliant minds long before modern high-performance hardware even existed. This project was a direct exercise in respecting and learning those timeless mechanics first. We stand on the shoulders of giants, looking out at a horizon that has no end. They showed us how to tame the early chaos, but the road ahead remains open. In the physics of data and scale, every solved problem only reveals a wider, undiscovered expanse of the unknown.
+It is mind-blowing that the core design patterns we rely on today were charted out by brilliant minds long before modern high-performance hardware even existed. This project was a direct exercise in respecting and learning those timeless mechanics first. We stand on the shoulders of giants, looking out at a horizon that has no end. They showed us how to tame the early chaos, but the road ahead remains open. In the physics of data and scale, solving one problem just opens the door to a massive world of new questions.
