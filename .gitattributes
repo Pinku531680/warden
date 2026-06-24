@@ -9,6 +9,7 @@ warden-ui/src/proto/compiled.d.ts linguist-generated=true
 # Exclude synthetic data generation scripts from the language statistics bar
 warden-ui/src/transactions/TransactionsDataGeneration.js linguist-generated=true
 warden-ui/src/users/UsersDataGeneration.js linguist-generated=true
+warden-ui/src/users/UsersFeatureAnalytics.js linguist-generated=true
 
 # Catch-all rule for any other data generation files you add later
 *DataGeneration.js linguist-generated=true
