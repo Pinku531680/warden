@@ -10,9 +10,16 @@ warden-ui/src/proto/compiled.d.ts linguist-generated=true
 warden-ui/src/transactions/TransactionsDataGeneration.js linguist-generated=true
 warden-ui/src/users/UsersDataGeneration.js linguist-generated=true
 
-# Optional: Catch-all rule for any other data generation files you add later
+# Catch-all rule for any other data generation files you add later
 *DataGeneration.js linguist-generated=true
 
+# Exclude simulation engine and client helpers from language stats
+warden-ui/src/services/simulationEngine.js linguist-generated=true
+warden-ui/src/utilities.js linguist-generated=true
+
+# Explicitly vendor/ignore nested package-lock files to stop dependency bloat
+warden-ui/package-lock.json linguist-generated=true
+**/package-lock.json linguist-generated=true
 
 
 
