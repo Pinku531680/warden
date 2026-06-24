@@ -1,31 +1,49 @@
-# 1. Surgical Strike: Hide only the Data Generation files
-warden-ui/src/users/UsersDataGeneration.js linguist-vendored
-warden-ui/src/transactions/TransactionsDataGeneration.js linguist-vendored
-warden-ui/src/services/simulationEngine.js linguist-vendored
-warden-ui/src/utilities.js linguist-vendored
-warden-ui/src/measurePerformance.js linguist-vendored
+# -----------------------------------------------------------------------------
+# GitHub Linguist Overrides - Language Statistics Cleanup
+# -----------------------------------------------------------------------------
 
-# 2. Kill the XML Noise
-# This hides pom.xml and IDE files so Java/Python can dominate
-*.xml linguist-vendored
-*.json linguist-vendored
-.idea/** linguist-vendored
-target/** linguist-vendored
+# Treat compiled/generated Protobuf files as generated (removes from stats & hides from diffs)
+warden-ui/src/proto/compiled.js linguist-generated=true
+warden-ui/src/proto/compiled.d.ts linguist-generated=true
 
-# 3. Force CSS, HTML, and your main App logic to stay detectable
-warden-ui/src/**/*.css linguist-detectable=true
-warden-ui/src/**/*.html linguist-detectable=true
-warden-ui/src/*.css linguist-detectable=true
-warden-ui/src/*.html linguist-detectable=true
-warden-ui/src/App.js linguist-detectable=true
+# Exclude synthetic data generation scripts from the language statistics bar
+warden-ui/src/transactions/TransactionsDataGeneration.js linguist-generated=true
+warden-ui/src/users/UsersDataGeneration.js linguist-generated=true
 
-# 4. Explicitly include your Analytics and Insights code
-# This ensures the rest of your 'users' and 'transactions' folders are counted
-warden-ui/src/users/** linguist-detectable=true
-warden-ui/src/transactions/** linguist-detectable=true
+# Optional: Catch-all rule for any other data generation files you add later
+*DataGeneration.js linguist-generated=true
 
-# 5. Hide React boilerplate that bloats the JS percentage
-warden-ui/src/reportWebVitals.js linguist-vendored
-warden-ui/src/setupTests.js linguist-vendored
-# warden-ui/package-lock.json linguist-vendored
-# warden-ui/public/** linguist-vendored
+
+
+
+# # 1. Surgical Strike: Hide only the Data Generation files
+# warden-ui/src/users/UsersDataGeneration.js linguist-vendored
+# warden-ui/src/transactions/TransactionsDataGeneration.js linguist-vendored
+# warden-ui/src/services/simulationEngine.js linguist-vendored
+# warden-ui/src/utilities.js linguist-vendored
+# warden-ui/src/measurePerformance.js linguist-vendored
+
+# # 2. Kill the XML Noise
+# # This hides pom.xml and IDE files so Java/Python can dominate
+# *.xml linguist-vendored
+# *.json linguist-vendored
+# .idea/** linguist-vendored
+# target/** linguist-vendored
+
+# # 3. Force CSS, HTML, and your main App logic to stay detectable
+# warden-ui/src/**/*.css linguist-detectable=true
+# warden-ui/src/**/*.html linguist-detectable=true
+# warden-ui/src/*.css linguist-detectable=true
+# warden-ui/src/*.html linguist-detectable=true
+# warden-ui/src/App.js linguist-detectable=true
+
+# # 4. Explicitly include your Analytics and Insights code
+# # This ensures the rest of your 'users' and 'transactions' folders are counted
+# warden-ui/src/users/** linguist-detectable=true
+# warden-ui/src/transactions/** linguist-detectable=true
+
+# # 5. Hide React boilerplate that bloats the JS percentage
+# warden-ui/src/reportWebVitals.js linguist-vendored
+# warden-ui/src/setupTests.js linguist-vendored
+# # warden-ui/package-lock.json linguist-vendored
+# # warden-ui/public/** linguist-vendored
