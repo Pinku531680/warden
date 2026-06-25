@@ -77,7 +77,7 @@ This section details the underlying infrastructure mechanics engineered to maxim
 ## **Architectural Takeaways & Learnings**
 Building Warden required moving past basic framework abstractions to confront the core realities of distributed infrastructure design. Below are the foundational paradigms and engineering truths established through this project:
 
-### 1. The Reality of Message Queues (Buffers, Not Magic)
+### 1. The Reality of Message Queues
 * **The Insight:** Message queues are not magical, indestructible black boxes—they are finite, memory-allocated network buffers. If downstream consumers fall behind during a massive stream ingestion, an unprotected queue will either run out of RAM or choke by dumping data onto the disk. 
 * **The Solution:** Systems must be designed assuming the broker *will* fail or lose data at scale. This reality drove the implementation of the backend watchdog layer to guarantee state reconstruction if the message queue's RAM gets wiped.
 
@@ -97,7 +97,7 @@ Building Warden required moving past basic framework abstractions to confront th
 * **The Insight:** Defaulting to "durable" queue settings blindly in a message broker creates a hidden performance bottleneck. Forcing a broker to save every single message to disk degrades streaming throughput significantly due to heavy disk I/O overhead.
 * **The Solution:** Since the ingestion gateway already records every transaction directly into **PostgreSQL** the moment it arrives, the database serves as our permanent, secure system record. This allows the broker queues to remain entirely transient (in-memory) for maximum speed. If the broker crashes and loses its memory frames, the recovery responsibility is simply shifted to the database ledger: the background watchdog scans the table and re-injects any uncompleted records, maximizing performance without losing any data.
 
-### 5. Serialization Efficiency: Text vs Binary Density
+### 5. Serialization Efficiency: JSON vs ProtoBuf
 * **The Insight:** Sending streaming data as standard JSON text strings creates unnecessary overhead. Carrying full-text field keys (like `"merchantType"` or `"transactionAmount"`) over the network inflates network packet sizes, and converting raw text back into code objects forces the system to waste valuable CPU cycles.
 * **The Solution:** Switching to a binary format like **Protocol Buffers** shrinks our network footprint by ~40–75%. Protobuf achieves this by stripping out all text keys entirely, replacing them with tiny integer tags mapped to a compiled blueprint. Additionally, it packs numerical data directly into dense binary bytes rather than writing out every digit as a text character, allowing our services to unpack incoming streams significantly faster.
 
