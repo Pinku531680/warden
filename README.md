@@ -63,6 +63,7 @@ This section details the underlying infrastructure mechanics engineered to maxim
 * **PostgreSQL:** Serves as the persistent operational audit log and master ledger for all inbound transactions.
 * **Redis:** Utilized as an ultra-low-latency distributed cache layer to handle initial idempotency checks and store real-time user state baselines.
 * **RabbitMQ:** Implements asynchronous, decoupled message lines using transient AMQP channels to isolate ingestion from heavy inference compute loops.
+* **Protocol Buffers:** Enforces a strict, cross-language binary serialization schema across the system, enabling low-overhead, chunked data emission from the client to the gateway.
 
 ### 2. Core Compute & Inference Core
 * **Spring Boot:** Handles the high-frequency WebSocket connection lifecycle, Protobuf parsing, and fast transactional database operations.
@@ -71,7 +72,6 @@ This section details the underlying infrastructure mechanics engineered to maxim
 
 ### 3. Telemetry & Visualization
 * **React.js:** Operates as the lightweight client dashboard and simulation core, written without third-party design frameworks to keep strict control over DOM rendering loops while actively managing the in-memory flight registry for reactive backpressure tracking.
-* **Protocol Buffers:** Enforces a strict, cross-language binary serialization schema across the system, enabling low-overhead, chunked data emission from the client to the gateway.
 * **Recharts & Nivo:** Used to render highly optimized, hardware-accelerated visualizations for live feature distributions and statistical anomalies.
 
 ## **Architectural Takeaways & Learnings**
