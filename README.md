@@ -110,7 +110,7 @@ Building Warden required moving past basic framework abstractions to confront th
   This lets us stress-test the data pipelines under harsh, pristine conditions that standard black-box machine learning generators completely fail to capture.
 
 ## **Technical References**
-Understanding Warden's architecture required diving into individual engineering articles and video breakdowns of Kafka, RabbitMQ, Flink, Idempotency, Backpressure, etc., and grasping the realities of distributed systems at scale.
+Implementing Warden required diving into individual engineering articles and video breakdowns of Kafka, RabbitMQ, Flink, Idempotency, Backpressure, Low-latency Inference, etc., and grasping the realities of Distributed Systems at scale.
 
 * **Idempotency by Arpit Bhayani:** [Idempotency](https://www.youtube.com/watch?v=m6DtqSb1BDM)
 * **Backpressure Mechanics:** [Conduktor: Deep-Dive into Backpressure Handling in Streaming Systems](https://www.conduktor.io/glossary/backpressure-handling-in-streaming-systems)
